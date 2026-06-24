@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import {
-  DayPicker,
-  getDefaultClassNames,
-  type DayButton,
-  type Locale,
-} from "react-day-picker"
+import { DayPicker, getDefaultClassNames } from "react-day-picker"
+import type { DayButton, Locale } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { CaretLeftIcon, CaretRightIcon, CaretDownIcon } from "@phosphor-icons/react"
+import {
+  CaretLeftIcon,
+  CaretRightIcon,
+  CaretDownIcon,
+} from "@phosphor-icons/react"
 
 function Calendar({
   className,
@@ -147,13 +147,19 @@ function Calendar({
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return (
-              <CaretLeftIcon className={cn("rtl:rotate-180 size-4", className)} {...props} />
+              <CaretLeftIcon
+                className={cn("size-4 rtl:rotate-180", className)}
+                {...props}
+              />
             )
           }
 
           if (orientation === "right") {
             return (
-              <CaretRightIcon className={cn("rtl:rotate-180 size-4", className)} {...props} />
+              <CaretRightIcon
+                className={cn("size-4 rtl:rotate-180", className)}
+                {...props}
+              />
             )
           }
 
