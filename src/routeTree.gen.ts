@@ -8,59 +8,84 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root"
-import { Route as IndexRouteImport } from "./routes/index"
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as landingRouteRouteImport } from './routes/(landing)/route'
+import { Route as landingIndexRouteImport } from './routes/(landing)/index'
 
-const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+const landingRouteRoute = landingRouteRouteImport.update({
+  id: '/(landing)',
   getParentRoute: () => rootRouteImport,
+} as any)
+const landingIndexRoute = landingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => landingRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute
+  '/': typeof landingIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute
+  '/': typeof landingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  "/": typeof IndexRoute
+  '/(landing)': typeof landingRouteRouteWithChildren
+  '/(landing)/': typeof landingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/"
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: "/"
-  id: "__root__" | "/"
+  to: '/'
+  id: '__root__' | '/(landing)' | '/(landing)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  landingRouteRoute: typeof landingRouteRouteWithChildren
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/"
-      path: "/"
-      fullPath: "/"
-      preLoaderRoute: typeof IndexRouteImport
+    '/(landing)': {
+      id: '/(landing)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof landingRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(landing)/': {
+      id: '/(landing)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof landingIndexRouteImport
+      parentRoute: typeof landingRouteRoute
     }
   }
 }
 
+interface landingRouteRouteChildren {
+  landingIndexRoute: typeof landingIndexRoute
+}
+
+const landingRouteRouteChildren: landingRouteRouteChildren = {
+  landingIndexRoute: landingIndexRoute,
+}
+
+const landingRouteRouteWithChildren = landingRouteRoute._addFileChildren(
+  landingRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  landingRouteRoute: landingRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx"
-import type { createStart } from "@tanstack/react-start"
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
