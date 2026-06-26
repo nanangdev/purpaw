@@ -5,6 +5,8 @@ import { DiaTextReveal } from "@/components/motion/dia-text-reveal"
 import { SpinningText } from "@/components/motion/spinning-text"
 import { TextAnimate } from "@/components/motion/text-animate"
 import FeatureScrollytelling from "@/components/landing/feature-scrollytelling"
+import LandingPreview from "@/components/landing/preview"
+import { ModernSeparator } from "@/components/glymph/modern-separator"
 
 export const Route = createFileRoute("/(landing)/")({ component: LandingMain })
 
@@ -96,6 +98,10 @@ function LandingMain() {
                 </div>
             </section>
             <FeatureScrollytelling />
+            <LandingPreview />
+            <div className="w-full px-6 xl:px-0" aria-hidden="true">
+                <ModernSeparator />
+            </div>
             <section className="h-svh"></section>
         </>
     )

@@ -121,6 +121,19 @@ function LandingLayout() {
                                     >
                                         Feature
                                     </a>
+                                    <a
+                                        href="/#preview"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
+                                        onClick={(e) => {
+                                            setIsMenuOpen(false)
+                                            if (window.location.pathname === "/") {
+                                                e.preventDefault()
+                                                document.getElementById("preview")?.scrollIntoView({ behavior: "smooth" })
+                                            }
+                                        }}
+                                    >
+                                        Preview
+                                    </a>
                                     {/* item lainnya */}
                                 </div>
                             </nav>
@@ -139,7 +152,7 @@ function LandingLayout() {
                 </div>
             </header>
 
-            <main>
+            <main className="bg-black text-white">
                 <Outlet />
             </main>
 
