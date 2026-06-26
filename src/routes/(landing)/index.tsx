@@ -3,6 +3,8 @@ import { createFileRoute } from "@tanstack/react-router"
 import { CaretRightIcon } from "@phosphor-icons/react"
 import { DiaTextReveal } from "@/components/motion/dia-text-reveal"
 import { SpinningText } from "@/components/motion/spinning-text"
+import { TextAnimate } from "@/components/motion/text-animate"
+import FeatureScrollytelling from "@/components/landing/feature-scrollytelling"
 
 export const Route = createFileRoute("/(landing)/")({ component: LandingMain })
 
@@ -29,11 +31,11 @@ function LandingMain() {
                 {/* Giant Background Text */}
                 <motion.div
                     style={{ y, opacity }}
-                    className="absolute z-0 top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-full max-w-7xl mx-auto flex items-center justify-center px-8 pointer-events-none"
+                    className="absolute z-0 top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-full max-w-7xl mx-auto flex items-center justify-center px-6 pointer-events-none"
                 >
-                    <h1 className="text-[20vw] lg:text-[16vw] xl:text-[21vw] font-black tracking-wide text-center leading-none uppercase text-white/80">
+                    <TextAnimate animation="slideUp" by="character" as="h1" duration={0.5} className="text-[18vw] lg:text-[16vw] xl:text-[19vw] font-black tracking-wide text-center leading-none uppercase text-white">
                         Purpaw
-                    </h1>
+                    </TextAnimate>
                 </motion.div>
 
                 {/* Main Content Container */}
@@ -67,9 +69,14 @@ function LandingMain() {
                                 <button className="bg-linear-to-r from-primary to-primary/90 text-white font-semibold text-sm px-8 py-3.5 rounded-full hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_20px_rgba(239,68,68,0.2)] cursor-pointer">
                                     Start Now
                                 </button>
-                                <button className="relative bg-black/90 backdrop-blur-2xl rounded-full p-1 pl-5 h-auto text-white flex flex-row items-center gap-5 hover:brightness-105">
+                                <button
+                                    onClick={() => {
+                                        document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
+                                    }}
+                                    className="relative bg-black/90 backdrop-blur-2xl rounded-full p-1 pl-5 h-auto text-white flex flex-row items-center gap-5 hover:brightness-105 cursor-pointer"
+                                >
                                     <div className="absolute inset-0 rounded-full glow-ring-outer pointer-events-none" />
-                                    <span className="">Feature</span>
+                                    <span className="font-pixel">Feature</span>
                                     <div className="relative size-9 flex items-center justify-center bg-black/30 backdrop-blur-2xl rounded-full">
                                         {/* Glowing rings in top-left & bottom-right */}
                                         <div className="absolute inset-0 rounded-full glow-ring-inner pointer-events-none" />
@@ -88,6 +95,8 @@ function LandingMain() {
                     </div>
                 </div>
             </section>
+            <FeatureScrollytelling />
+            <section className="h-svh"></section>
         </>
     )
 }

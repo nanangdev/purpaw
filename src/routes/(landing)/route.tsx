@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { Paw } from "@/components/glymph/paw"
 import { Button } from "@/components/ui/button"
-import { EqualsIcon } from "@phosphor-icons/react"
+import { EqualsIcon, XIcon } from "@phosphor-icons/react"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
+import { motion } from "motion/react"
 
 export const Route = createFileRoute("/(landing)")({
     component: LandingLayout,
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/(landing)")({
 
 function LandingLayout() {
     const [isAtTop, setIsAtTop] = useState(true)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -22,24 +24,44 @@ function LandingLayout() {
 
     return (
         <>
+            {/* Backdrop Overlay (Click outside to close) */}
+            <motion.div
+                initial={false}
+                animate={isMenuOpen ? "open" : "closed"}
+                variants={{
+                    open: { opacity: 1, pointerEvents: "auto" },
+                    closed: { opacity: 0, pointerEvents: "none" }
+                }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                onClick={() => setIsMenuOpen(false)}
+                className="fixed inset-0 z-98 bg-black/60 backdrop-blur-sm"
+            />
+
             <header
-                className={`fixed w-full z-99 transition-all duration-300 bg-transparent top-0 left-0 right-0 px-0 md:px-2 top-0" ${isAtTop ? "md:top-2" : "top-4 md:top-6"
+                className={`fixed w-full z-99 transition-all duration-300 top-0 left-0 right-0 px-0 md:px-2 ${isAtTop ? "top-0 md:top-2" : "top-0"
                     }`}
             >
-                <div className={`relative max-w-7xl mx-auto flex flex-row items-center justify-between transition-all duration-300" ${isAtTop ? "bg-transparent h-15 md:h-18 p-4 xl:px-0 w-full border-0" : "bg-transparent backdrop-blur-lg h-auto p-2 md:p-3 px-4 md:px-5 xl:px-4 w-[calc(100%-32px)] md:w-[calc(100%-64px)] xl:w-[calc(100%-120px)] rounded-full border border-border/40"
-                    }`}>
-                    <nav className="flex-1 flex justify-end md:justify-start order-2 md:order-1">
-                        <button className={`relative rounded-full p-1 md:p-1.5 pr-3 h-auto text-white flex flex-row items-center gap-1.5 md:gap-3 md:pr-4 hover:brightness-105 ${isAtTop ? "md:bg-black/90 md:backdrop-blur-2xl" : "md:bg-transparent md:backdrop-blur-none"}`}>
+                <div className={`relative max-w-7xl mx-auto flex flex-row items-center justify-between transition-all duration-300 ${isAtTop ? "bg-transparent h-15 md:h-18 p-4 xl:px-0 w-full border-0" : "bg-transparent backdrop-blur-lg h-auto p-2 md:p-3 px-4 md:px-5 xl:px-4 w-[calc(100%-32px)] md:w-[calc(100%-64px)] xl:w-[calc(100%-120px)] rounded-full border border-border/20 mt-4"
+                    }  ${isMenuOpen ? "bg-zinc-950/95 border-white/10" : "bg-transparent"}`}>
+                    <div className="flex-1 flex justify-end md:justify-start order-2 md:order-1">
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className={`relative rounded-full p-1 md:p-1.5 pr-3 h-auto text-white flex flex-row items-center gap-1.5 md:gap-3 md:pr-4 hover:brightness-105 cursor-pointer ${isAtTop ? "md:bg-black/90 md:backdrop-blur-2xl" : "md:bg-transparent md:backdrop-blur-none"}`}
+                        >
                             <div className={`hidden absolute inset-0 rounded-full glow-ring-outer pointer-events-none ${isAtTop ? "md:block" : "md:hidden"}`} />
                             <div className={`relative size-7.5 flex items-center justify-center rounded-full transition-all duration-300 ${isAtTop ? "md:bg-black/30 md:backdrop-blur-2xl" : "md:bg-transparent md:backdrop-blur-2xl"}`}>
                                 {/* Glowing rings in top-left & bottom-right */}
                                 <div className={`hidden absolute inset-0 rounded-full glow-ring-inner pointer-events-none ${isAtTop ? "md:block" : "md:hidden"}`} />
 
-                                <EqualsIcon className={`relative size-10 transition-all duration-300 z-10 ${isAtTop ? "md:size-7" : "md:size-12!"}`} />
+                                {isMenuOpen ? (
+                                    <XIcon className={`relative size-10 transition-all duration-300 z-10 ${isAtTop ? "md:size-7" : "md:size-12!"}`} />
+                                ) : (
+                                    <EqualsIcon className={`relative size-10 transition-all duration-300 z-10 ${isAtTop ? "md:size-7" : "md:size-12!"}`} />
+                                )}
                             </div>
-                            <span className={`sr-only ${isAtTop ? "md:not-sr-only" : "sr-only"}`}>Menu</span>
+                            <span className={`sr-only ${isAtTop ? "md:not-sr-only" : "sr-only"}`}>{isMenuOpen ? "Tutup" : "Menu"}</span>
                         </button>
-                    </nav>
+                    </div>
                     <a href="/" title="Purpaw" className="flex-none order-1 md:order-2">
                         <Paw variant={`${isAtTop ? "filled" : "outline"}`} className={`size-9 transition-all duration-300 ${isAtTop ? "text-primary" : "text-white"}`} />
                         <span className="sr-only">Purpaw</span>
@@ -51,6 +73,69 @@ function LandingLayout() {
                             </a>
                         </Button>
                     </div>
+
+                    {/* Dropdown Menu Panel (Inherits width and curves of the Header Container) */}
+                    <motion.div
+                        initial={false}
+                        animate={isMenuOpen ? "open" : "closed"}
+                        variants={{
+                            open: {
+                                opacity: 1,
+                                height: "var(--menu-open-height)",
+                                pointerEvents: "auto",
+                                transition: {
+                                    height: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+                                    opacity: { duration: 0.3 }
+                                }
+                            },
+                            closed: {
+                                opacity: 0,
+                                height: 0,
+                                pointerEvents: "none",
+                                transition: {
+                                    height: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                                    opacity: { duration: 0.35, ease: "easeInOut" }
+                                }
+                            }
+                        }}
+                        className={`absolute bg-transparent backdrop-blur-none top-full left-0 w-full z-80 overflow-hidden mt-3 flex flex-col gap-3 border-0 shadow-none [--menu-open-height:calc(100svh-90px)] md:[--menu-open-height:calc(100svh-120px)] ${isAtTop ? "px-4 md:px-0" : "md:px-0"}`}
+                    >
+                        {/* CARD 1: Main Navigation Links (Group 1) */}
+                        <div className="w-full bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-[28px] p-6 md:p-8 flex flex-col relative shadow-2xl overflow-hidden grow flex-1">
+                            {/* Glow effect */}
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,var(--primary)/8%,transparent_50%)] pointer-events-none" />
+
+                            {/* Group 1: Menu Main Navigation Links (Scrollable if height is insufficient) */}
+                            <nav aria-label="Main Navigation" className="w-full overflow-y-auto scroll-fade-y grow pr-1 z-10 scrollbar-none flex flex-col items-center">
+                                <div className="flex flex-col items-center gap-1.5 md:gap-2.5 text-center font-black uppercase select-none w-full my-auto py-4">
+                                    <a
+                                        href="/#features"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
+                                        onClick={(e) => {
+                                            setIsMenuOpen(false)
+                                            if (window.location.pathname === "/") {
+                                                e.preventDefault()
+                                                document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
+                                            }
+                                        }}
+                                    >
+                                        Feature
+                                    </a>
+                                    {/* item lainnya */}
+                                </div>
+                            </nav>
+                        </div>
+
+                        {/* CARD 2: Login, Account & Status (Group 2 - Fixed at the bottom) */}
+                        <div className="w-full bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-full p-2 md:px-4 flex flex-row items-center justify-between gap-3 relative z-10 flex-none">
+                            <span className="text-white/80 uppercase ml-2">Not logged in</span>
+                            <Button size="lg" className="px-8 -mr-1" asChild>
+                                <a href="/login" title="Masuk" onClick={() => setIsMenuOpen(false)}>
+                                    Masuk
+                                </a>
+                            </Button>
+                        </div>
+                    </motion.div>
                 </div>
             </header>
 
