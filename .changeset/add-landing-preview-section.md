@@ -15,3 +15,10 @@
 ## Other
 - Use placeholder screenshot images, change soon for real screenshot.
 - add src/components/motion/warp-background.tsx for future.
+
+=====
+
+## Changes
+
+### Changes 1
+- Device Bazel via url R2 + CDN Rule --> proper reusable react components (svg).

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { EqualsIcon, XIcon } from "@phosphor-icons/react"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { motion } from "motion/react"
+import { PawCursor } from "@/components/cursor/paw-cursor"
 
 export const Route = createFileRoute("/(landing)")({
     component: LandingLayout,
@@ -24,6 +25,7 @@ function LandingLayout() {
 
     return (
         <>
+            <PawCursor />
             {/* Backdrop Overlay (Click outside to close) */}
             <motion.div
                 initial={false}
@@ -41,7 +43,7 @@ function LandingLayout() {
                 className={`fixed w-full z-99 transition-all duration-300 top-0 left-0 right-0 px-0 md:px-2 ${isAtTop ? "top-0 md:top-2" : "top-0"
                     }`}
             >
-                <div className={`relative max-w-7xl mx-auto flex flex-row items-center justify-between transition-all duration-300 ${isAtTop ? "bg-transparent h-15 md:h-18 p-4 xl:px-0 w-full border-0" : "bg-transparent backdrop-blur-lg h-auto p-2 md:p-3 px-4 md:px-5 xl:px-4 w-[calc(100%-32px)] md:w-[calc(100%-64px)] xl:w-[calc(100%-120px)] rounded-full border border-border/20 mt-4"
+                <div className={`relative max-w-7xl mx-auto flex flex-row items-center justify-between transition-all duration-300 ${isAtTop ? "bg-transparent h-15 md:h-18 p-4 xl:px-0 w-full border border-transparent" : "bg-transparent backdrop-blur-lg h-auto p-2 md:p-3 px-4 md:px-5 xl:px-4 w-[calc(100%-32px)] md:w-[calc(100%-64px)] xl:w-[calc(100%-120px)] rounded-full border border-border/20 mt-4"
                     }  ${isMenuOpen ? "bg-zinc-950/95 border-white/10" : "bg-transparent"}`}>
                     <div className="flex-1 flex justify-end md:justify-start order-2 md:order-1">
                         <button
@@ -133,6 +135,19 @@ function LandingLayout() {
                                         }}
                                     >
                                         Preview
+                                    </a>
+                                    <a
+                                        href="/#ai"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
+                                        onClick={(e) => {
+                                            setIsMenuOpen(false)
+                                            if (window.location.pathname === "/") {
+                                                e.preventDefault()
+                                                document.getElementById("ai")?.scrollIntoView({ behavior: "smooth" })
+                                            }
+                                        }}
+                                    >
+                                        AI
                                     </a>
                                     {/* item lainnya */}
                                 </div>

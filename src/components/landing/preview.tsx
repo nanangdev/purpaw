@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import type { CSSProperties } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Lenis from "lenis"
 import MouseScrollIcon from "@/components/motion/mouse-scroll-icon"
+import { IphoneFrame } from "@/components/glymph/iphone-frame"
+import { IpadFrame } from "@/components/glymph/ipad-frame"
 
 interface PreviewItem {
     mobileUrl: string
@@ -20,49 +21,24 @@ const PREVIEW_ITEMS: PreviewItem[] = [
     { mobileUrl: "https://cdn-purpaw-l.ngepos.com/l/placeholder/placeholder-mobile.webp", tabletUrl: "https://cdn-purpaw-l.ngepos.com/l/placeholder/placeholder-tablet.webp", alt: "Pratinjau komunitas Purpaw" },
 ]
 
-const MOBILE_SCREEN_INSET: CSSProperties = { top: "1.5%", right: "3%", bottom: "1.5%", left: "3%" }
-const TABLET_SCREEN_INSET: CSSProperties = { top: "4%", right: "5%", bottom: "4%", left: "5%" }
-
 function PreviewBezelItem({ item }: { item: PreviewItem }) {
     return (
-        <div className="relative h-full flex-none">
-            <div className="relative h-full lg:hidden" style={{ aspectRatio: "490 / 1000" }}>
-                <div className="absolute overflow-hidden rounded-[35px] md:rounded-[42.5px]" style={MOBILE_SCREEN_INSET}>
-                    <img
-                        src={item.mobileUrl}
-                        alt={item.alt}
-                        loading="lazy"
-                        draggable={false}
-                        className="h-full w-full select-none object-cover"
-                    />
-                </div>
-                <img
-                    src="https://cdn-purpaw-l.ngepos.com/l/l_preview_device-bezel-mobile.png"
-                    alt=""
-                    aria-hidden="true"
-                    loading="lazy"
-                    draggable={false}
-                    className="pointer-events-none absolute inset-0 h-full w-full select-none"
+        <div className="relative flex h-full flex-none items-center">
+            <div className="h-full text-black lg:hidden">
+                <IphoneFrame
+                    src={item.mobileUrl}
+                    role="img"
+                    aria-label={item.alt}
+                    className="h-full w-auto select-none"
                 />
             </div>
 
-            <div className="relative hidden h-full lg:block" style={{ aspectRatio: "1320 / 940" }}>
-                <div className="absolute overflow-hidden" style={TABLET_SCREEN_INSET}>
-                    <img
-                        src={item.tabletUrl}
-                        alt={item.alt}
-                        loading="lazy"
-                        draggable={false}
-                        className="h-full w-full select-none object-cover"
-                    />
-                </div>
-                <img
-                    src="https://cdn-purpaw-l.ngepos.com/l/l_preview_device-bezel-tablet.png"
-                    alt=""
-                    aria-hidden="true"
-                    loading="lazy"
-                    draggable={false}
-                    className="pointer-events-none absolute inset-0 h-full w-full select-none"
+            <div className="hidden h-full text-black lg:block">
+                <IpadFrame
+                    src={item.tabletUrl}
+                    role="img"
+                    aria-label={item.alt}
+                    className="h-full w-auto select-none"
                 />
             </div>
         </div>

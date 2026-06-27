@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react"
+import type Hls from "hls.js"
 import { motion, useScroll, useTransform } from "motion/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { CaretRightIcon } from "@phosphor-icons/react"
@@ -7,6 +9,11 @@ import { TextAnimate } from "@/components/motion/text-animate"
 import FeatureScrollytelling from "@/components/landing/feature-scrollytelling"
 import LandingPreview from "@/components/landing/preview"
 import { ModernSeparator } from "@/components/glymph/modern-separator"
+import LandingAiPowered from "@/components/landing/ai-powered"
+
+const PLAYBACK_ID = "5Bk6THGwzsJuwmtjYhCHzh9wLvaL3lOxa2z1Opr8LSs"
+const VIDEO_SRC = `https://stream.mux.com/${PLAYBACK_ID}.m3u8?min_resolution=720p`
+const POSTER_SRC = `https://image.mux.com/${PLAYBACK_ID}/thumbnail.png?time=0`
 
 export const Route = createFileRoute("/(landing)/")({ component: LandingMain })
 
@@ -14,13 +21,44 @@ function LandingMain() {
     const { scrollY } = useScroll()
     const y = useTransform(scrollY, [0, 600], [0, 120])
     const opacity = useTransform(scrollY, [0, 400], [0.8, 0.3])
+    const videoRef = useRef<HTMLVideoElement>(null)
+
+    useEffect(() => {
+        const video = videoRef.current
+        if (!video) return
+        let hls: Hls | null = null
+        let cancelled = false
+
+        // Safari / iOS play HLS natively — just point the element at the stream
+        if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = VIDEO_SRC
+            return
+        }
+
+        // Other browsers: attach the stream via hls.js (Media Source Extensions).
+        // Dynamic import keeps hls.js out of the server bundle (SSR-safe).
+        void import("hls.js").then(({ default: HlsLib }) => {
+            if (cancelled || !HlsLib.isSupported()) return
+            hls = new HlsLib({ capLevelToPlayerSize: true })
+            hls.loadSource(VIDEO_SRC)
+            hls.attachMedia(video)
+            hls.on(HlsLib.Events.MANIFEST_PARSED, () => {
+                video.play().catch(() => {})
+            })
+        })
+
+        return () => {
+            cancelled = true
+            hls?.destroy()
+        }
+    }, [])
 
     return (
         <>
             <section className="relative min-h-svh lg:min-h-screen w-full bg-black text-white overflow-hidden flex flex-col justify-between pt-16 pb-6 xl:pb-8 px-6">
                 <video
-                    src="https://stream.mux.com/5Bk6THGwzsJuwmtjYhCHzh9wLvaL3lOxa2z1Opr8LSs.m3u8?min_resolution=720p"
-                    poster="https://image.mux.com/5Bk6THGwzsJuwmtjYhCHzh9wLvaL3lOxa2z1Opr8LSs/thumbnail.webp"
+                    ref={videoRef}
+                    poster={POSTER_SRC}
                     playsInline
                     loop
                     autoPlay
@@ -102,6 +140,7 @@ function LandingMain() {
             <div className="w-full px-6 xl:px-0" aria-hidden="true">
                 <ModernSeparator />
             </div>
+            <LandingAiPowered />
             <section className="h-svh"></section>
         </>
     )
