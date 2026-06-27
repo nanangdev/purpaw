@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState } from "react"
 import {
     motion,
     useScroll,
@@ -84,98 +84,23 @@ const blocks: FeatureBlock[] = [
     },
 ]
 
+// Scroll distance dedicated to each feature (tune to taste).
+const STEP_VH = 55
+
 export default function FeatureScrollytelling() {
     const containerRef = useRef<HTMLDivElement>(null)
     const [activeIndex, setActiveIndex] = useState(0)
-    const isTransitioning = useRef(false)
-    const enteredStickyAt = useRef(0)
-    const wasSticky = useRef(false)
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"],
     })
 
-    // Snippy snapping scroll wheel handler
-    useEffect(() => {
-        const container = containerRef.current
-        if (!container) return
-
-        const handleWheel = (e: WheelEvent) => {
-            // If we are actively transitioning, prevent double scroll triggers
-            if (isTransitioning.current) {
-                e.preventDefault()
-                return
-            }
-
-            const direction = e.deltaY > 0 ? 1 : -1
-            const targetIndex = activeIndex + direction
-
-            // Prevent scroll momentum from immediately switching slides upon entry
-            if (activeIndex === 0 && direction === 1) {
-                const timeSinceEntry = Date.now() - enteredStickyAt.current
-                if (timeSinceEntry < 600) {
-                    e.preventDefault()
-                    return
-                }
-            }
-
-            if (activeIndex === blocks.length - 1 && direction === -1) {
-                const timeSinceEntry = Date.now() - enteredStickyAt.current
-                if (timeSinceEntry < 600) {
-                    e.preventDefault()
-                    return
-                }
-            }
-
-            // Capture and snap the scroll within the scrollytelling bounds
-            if (targetIndex >= 0 && targetIndex < blocks.length) {
-                e.preventDefault()
-                isTransitioning.current = true
-
-                setActiveIndex(targetIndex)
-
-                const rect = container.getBoundingClientRect()
-                const absoluteTop = rect.top + window.scrollY
-                const targetScroll =
-                    absoluteTop + (targetIndex / (blocks.length - 1)) * window.innerHeight
-
-                window.scrollTo({
-                    top: targetScroll,
-                    behavior: "smooth",
-                })
-
-                setTimeout(() => {
-                    isTransitioning.current = false
-                }, 800) // matches transition duration + easing speed
-            }
-        }
-
-        container.addEventListener("wheel", handleWheel, { passive: false })
-        return () => {
-            container.removeEventListener("wheel", handleWheel)
-        }
-    }, [activeIndex])
-
-    // Update active index based on scroll position (when scrolled by touch or scrollbar)
+    // Derive the active feature purely from scroll progress.
+    // No wheel hijacking — global Lenis owns the scroll, so this stays in sync.
     useMotionValueEvent(scrollYProgress, "change", (latest) => {
-        const isCurrentlySticky = latest > 0 && latest < 1
-        if (isCurrentlySticky && !wasSticky.current) {
-            enteredStickyAt.current = Date.now()
-            wasSticky.current = true
-        } else if (!isCurrentlySticky) {
-            wasSticky.current = false
-        }
-
-        if (!isTransitioning.current) {
-            const index = Math.min(
-                Math.floor(latest * blocks.length),
-                blocks.length - 1
-            )
-            if (index !== activeIndex) {
-                setActiveIndex(index)
-            }
-        }
+        const index = Math.min(Math.floor(latest * blocks.length), blocks.length - 1)
+        if (index !== activeIndex) setActiveIndex(index)
     })
 
     const indicatorY = useTransform(scrollYProgress, [0, 1], ["0%", "300%"])
@@ -184,7 +109,8 @@ export default function FeatureScrollytelling() {
         <section
             ref={containerRef}
             id="features"
-            className="relative h-[200vh] bg-black text-white w-full"
+            className="relative w-full bg-black text-white"
+            style={{ height: `${100 + STEP_VH * blocks.length}vh` }}
         >
             {/* Sticky Wrapper */}
             <div className="sticky top-0 flex h-screen w-full flex-col justify-center overflow-hidden pt-16 lg:pt-24">

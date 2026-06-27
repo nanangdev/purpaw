@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useContext, useEffect, useRef } from "react"
 import type Hls from "hls.js"
 import { motion, useScroll, useTransform } from "motion/react"
 import { createFileRoute } from "@tanstack/react-router"
@@ -10,6 +10,7 @@ import FeatureScrollytelling from "@/components/landing/feature-scrollytelling"
 import LandingPreview from "@/components/landing/preview"
 import { ModernSeparator } from "@/components/glymph/modern-separator"
 import LandingAiPowered from "@/components/landing/ai-powered"
+import { LenisScrollContext } from "./route"
 
 const PLAYBACK_ID = "5Bk6THGwzsJuwmtjYhCHzh9wLvaL3lOxa2z1Opr8LSs"
 const VIDEO_SRC = `https://stream.mux.com/${PLAYBACK_ID}.m3u8?min_resolution=720p`
@@ -22,6 +23,7 @@ function LandingMain() {
     const y = useTransform(scrollY, [0, 600], [0, 120])
     const opacity = useTransform(scrollY, [0, 400], [0.8, 0.3])
     const videoRef = useRef<HTMLVideoElement>(null)
+    const scrollToId = useContext(LenisScrollContext)
 
     useEffect(() => {
         const video = videoRef.current
@@ -110,9 +112,7 @@ function LandingMain() {
                                     Start Now
                                 </button>
                                 <button
-                                    onClick={() => {
-                                        document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
-                                    }}
+                                    onClick={() => scrollToId("features")}
                                     className="relative bg-black/90 backdrop-blur-2xl rounded-full p-1 pl-5 h-auto text-white flex flex-row items-center gap-5 hover:brightness-105 cursor-pointer"
                                 >
                                     <div className="absolute inset-0 rounded-full glow-ring-outer pointer-events-none" />

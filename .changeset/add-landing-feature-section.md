@@ -18,3 +18,12 @@
 - Add aditional skill agent for global agent on workspace.
 - add pixel font from Fontsource.
 - install Lenis for future section.
+
+=====
+
+## Changes
+ 
+### Change 1:
+- Delete wheel-hijack.
+- ActiveIndex pure scrollYProgress (Lenis auto integrated).
+- Scroll loose to ~540vh.

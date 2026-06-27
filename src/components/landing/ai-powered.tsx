@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import Lenis from "lenis"
 
 interface AiMedia {
     type: "image" | "video"
@@ -54,34 +53,6 @@ export default function LandingAiPowered() {
         if (!section || !stage) return
 
         gsap.registerPlugin(ScrollTrigger)
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-        const lenisState: {
-            lenis: Lenis | null
-            ticker: ((time: number) => void) | null
-        } = { lenis: null, ticker: null }
-
-        const initLenis = () => {
-            if (reduceMotion || lenisState.lenis) return
-            const lenis = new Lenis({ autoRaf: false, anchors: false })
-            lenis.on("scroll", ScrollTrigger.update)
-            const ticker = (time: number) => lenis.raf(time * 1000)
-            gsap.ticker.add(ticker)
-            gsap.ticker.lagSmoothing(0)
-            lenisState.lenis = lenis
-            lenisState.ticker = ticker
-        }
-
-        const destroyLenis = () => {
-            if (lenisState.ticker) {
-                gsap.ticker.remove(lenisState.ticker)
-                lenisState.ticker = null
-            }
-            if (lenisState.lenis) {
-                lenisState.lenis.destroy()
-                lenisState.lenis = null
-            }
-        }
 
         const slideEls = slideRefs.current.filter(Boolean) as HTMLDivElement[]
         const mediaEls = mediaRefs.current.filter(Boolean) as HTMLElement[]
@@ -147,16 +118,6 @@ export default function LandingAiPowered() {
 
             // hold on the last slide before the pin releases
             tl.to({}, { duration: 0.6 * slot })
-
-            ScrollTrigger.create({
-                trigger: section,
-                start: "top bottom",
-                end: "bottom top",
-                onEnter: initLenis,
-                onEnterBack: initLenis,
-                onLeave: destroyLenis,
-                onLeaveBack: destroyLenis,
-            })
         }, sectionRef)
 
         const refresh = () => ScrollTrigger.refresh()
@@ -167,7 +128,6 @@ export default function LandingAiPowered() {
             window.removeEventListener("load", refresh)
             clearTimeout(refreshTimeout)
             ctx.revert()
-            destroyLenis()
         }
     }, [])
 

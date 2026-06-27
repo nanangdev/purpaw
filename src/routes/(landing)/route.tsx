@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react"
+import { createContext, useEffect, useRef, useState } from "react"
+import type { MouseEvent } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Lenis from "lenis"
 import { Paw } from "@/components/glymph/paw"
 import { Button } from "@/components/ui/button"
 import { EqualsIcon, XIcon } from "@phosphor-icons/react"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { motion } from "motion/react"
 import { PawCursor } from "@/components/cursor/paw-cursor"
+
+// Exposes a `scrollToId(id)` helper backed by the global Lenis instance so any
+// descendant (e.g. the hero CTA in index.tsx) can smooth-scroll consistently.
+export const LenisScrollContext = createContext<(id: string) => void>(() => {})
 
 export const Route = createFileRoute("/(landing)")({
     component: LandingLayout,
@@ -13,6 +21,7 @@ export const Route = createFileRoute("/(landing)")({
 function LandingLayout() {
     const [isAtTop, setIsAtTop] = useState(true)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const lenisRef = useRef<Lenis | null>(null)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -23,8 +32,55 @@ function LandingLayout() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
+    // Single global Lenis instance for the whole page, synced with ScrollTrigger.
+    // Driving Lenis through gsap.ticker keeps smooth-scroll and GSAP pin/scrub
+    // perfectly in lockstep, so scrolling stays consistent across every section.
+    useEffect(() => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        gsap.registerPlugin(ScrollTrigger)
+
+        const lenis = new Lenis({ autoRaf: false, anchors: false })
+        lenisRef.current = lenis
+        lenis.on("scroll", ScrollTrigger.update)
+        const ticker = (time: number) => lenis.raf(time * 1000)
+        gsap.ticker.add(ticker)
+        gsap.ticker.lagSmoothing(0)
+
+        const refresh = () => ScrollTrigger.refresh()
+        window.addEventListener("load", refresh)
+        const refreshTimeout = setTimeout(refresh, 300)
+
+        return () => {
+            window.removeEventListener("load", refresh)
+            clearTimeout(refreshTimeout)
+            gsap.ticker.remove(ticker)
+            lenis.destroy()
+            lenisRef.current = null
+        }
+    }, [])
+
+    const scrollToId = (id: string) => {
+        const target = document.getElementById(id)
+        if (!target) return
+        if (lenisRef.current) lenisRef.current.scrollTo(target)
+        else target.scrollIntoView({ behavior: "smooth" })
+    }
+
+    const scrollToSection = (id: string) => (e: MouseEvent) => {
+        setIsMenuOpen(false)
+        if (window.location.pathname !== "/") return
+        e.preventDefault()
+        scrollToId(id)
+    }
+
     return (
-        <>
+        <LenisScrollContext.Provider value={scrollToId}>
+            <style>{`
+                html.lenis, html.lenis body { height: auto; }
+                .lenis.lenis-smooth { scroll-behavior: auto !important; }
+                .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+                .lenis.lenis-stopped { overflow: hidden; }
+            `}</style>
             <PawCursor />
             {/* Backdrop Overlay (Click outside to close) */}
             <motion.div
@@ -113,39 +169,21 @@ function LandingLayout() {
                                     <a
                                         href="/#features"
                                         className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
-                                        onClick={(e) => {
-                                            setIsMenuOpen(false)
-                                            if (window.location.pathname === "/") {
-                                                e.preventDefault()
-                                                document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
-                                            }
-                                        }}
+                                        onClick={scrollToSection("features")}
                                     >
                                         Feature
                                     </a>
                                     <a
                                         href="/#preview"
                                         className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
-                                        onClick={(e) => {
-                                            setIsMenuOpen(false)
-                                            if (window.location.pathname === "/") {
-                                                e.preventDefault()
-                                                document.getElementById("preview")?.scrollIntoView({ behavior: "smooth" })
-                                            }
-                                        }}
+                                        onClick={scrollToSection("preview")}
                                     >
                                         Preview
                                     </a>
                                     <a
                                         href="/#ai"
                                         className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
-                                        onClick={(e) => {
-                                            setIsMenuOpen(false)
-                                            if (window.location.pathname === "/") {
-                                                e.preventDefault()
-                                                document.getElementById("ai")?.scrollIntoView({ behavior: "smooth" })
-                                            }
-                                        }}
+                                        onClick={scrollToSection("ai")}
                                     >
                                         AI
                                     </a>
@@ -174,6 +212,6 @@ function LandingLayout() {
             <footer>
 
             </footer>
-        </>
+        </LenisScrollContext.Provider>
     )
 }
