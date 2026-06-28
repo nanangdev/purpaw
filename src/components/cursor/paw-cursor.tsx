@@ -151,7 +151,7 @@ function PawPrintCanvas({
         }
     }, [size, padPrintColor, maxPrintLifeTime])
 
-    return <canvas ref={canvasRef} className="pointer-events-none fixed left-0 top-0" style={{ zIndex }} />
+    return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none fixed left-0 top-0" style={{ zIndex }} />
 }
 
 export function PawCursor({
@@ -327,6 +327,7 @@ export function PawCursor({
         <>
             <PawPrintCanvas size={size} padPrintColor={padPrintColor} maxPrintLifeTime={maxPrintLifeTime} zIndex={zIndex} />
             <motion.div
+                aria-hidden="true"
                 style={{
                     x: laserX,
                     y: laserY,
@@ -339,6 +340,7 @@ export function PawCursor({
             />
             <svg
                 ref={svgRef}
+                aria-hidden="true"
                 width={size * 2}
                 height={size * 2}
                 className="pointer-events-none fixed left-0 top-0 overflow-visible"

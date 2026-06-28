@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { TextAnimate } from "../motion/text-animate"
 
 interface AiMedia {
     type: "image" | "video"
@@ -134,13 +135,13 @@ export default function LandingAiPowered() {
     return (
         <section ref={sectionRef} id="ai" className="relative w-full overflow-hidden bg-black text-white">
             <div className="ai-header mx-auto max-w-3xl px-6 pt-28 pb-16 text-center md:pt-36">
-                <h2 className="text-4xl font-black leading-tight tracking-tight text-white md:text-6xl lg:text-7xl">
+                <TextAnimate animation="slideUp" by="word" as="h2" className="max-w-4xl mx-auto text-4xl font-black text-white md:text-6xl lg:text-7xl leading-tight">
                     AI yang Paham Kucingmu
-                </h2>
-                <p className="mx-auto mt-5 max-w-xl text-sm text-white/60 md:text-base">
+                </TextAnimate>
+                <TextAnimate animation="slideUp" by="word" as="p" className="mx-auto mt-6 text-base text-white/80 md:text-lg">
                     Purpaw menggabungkan data kesehatan kucing dengan kecerdasan buatan untuk
                     memberi saran yang tepat — kapan pun, di mana pun.
-                </p>
+                </TextAnimate>
             </div>
 
             <div ref={stageRef} className="relative h-screen w-full overflow-hidden">
@@ -153,9 +154,9 @@ export default function LandingAiPowered() {
                         className="absolute inset-0"
                         style={{ zIndex: i, backgroundColor: item.bg }}
                     >
-                        <div className="flex h-full flex-col lg:flex-row">
+                        <div className="flex h-full flex-col xl:flex-row">
                             {/* media half */}
-                            <div className="relative min-h-0 flex-1 overflow-hidden lg:h-full lg:w-1/2 lg:flex-none">
+                            <div className="relative min-h-0 flex-1 overflow-hidden xl:h-full xl:w-1/2 xl:flex-none">
                                 {item.media.type === "video" ? (
                                     <video
                                         ref={(el) => {
@@ -184,11 +185,11 @@ export default function LandingAiPowered() {
                             </div>
 
                             {/* text half */}
-                            <div className="flex min-h-0 flex-1 flex-col justify-center px-6 py-8 sm:px-10 lg:h-full lg:w-1/2 lg:flex-none lg:justify-center lg:px-16 lg:py-20">
+                            <div className="flex min-h-0 flex-1 flex-col justify-center px-6 py-8 sm:px-10 xl:h-full xl:w-1/2 xl:flex-none xl:justify-center xl:px-16 xl:py-20">
                                 <div className="overflow-hidden">
                                     <span
                                         data-line
-                                        className="block text-[11px] font-semibold tracking-[0.3em] text-white/50 uppercase"
+                                        className="block text-sm md:text-base font-pixel text-white/90 uppercase"
                                     >
                                         0{i + 1} — Fitur AI
                                     </span>
@@ -203,7 +204,7 @@ export default function LandingAiPowered() {
                                 </div>
                                 <p
                                     data-fade
-                                    className="mt-4 max-w-md text-sm leading-relaxed text-white/60 md:text-base"
+                                    className="mt-4 max-w-md leading-relaxed text-base text-white/80 md:text-lg"
                                 >
                                     {item.description}
                                 </p>

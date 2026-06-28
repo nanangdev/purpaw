@@ -23,7 +23,7 @@ const PREVIEW_ITEMS: PreviewItem[] = [
 function PreviewBezelItem({ item }: { item: PreviewItem }) {
     return (
         <div className="relative flex h-full flex-none items-center">
-            <div className="h-full text-black lg:hidden">
+            <div className="h-full text-black xl:hidden">
                 <IphoneFrame
                     src={item.mobileUrl}
                     role="img"
@@ -32,7 +32,7 @@ function PreviewBezelItem({ item }: { item: PreviewItem }) {
                 />
             </div>
 
-            <div className="hidden h-full text-black lg:block">
+            <div className="hidden h-full text-black xl:block">
                 <IpadFrame
                     src={item.tabletUrl}
                     role="img"
@@ -119,7 +119,7 @@ export default function LandingPreview() {
     }, [])
 
     const wordClass =
-        "text-[18vw] leading-none font-black tracking-tight text-white uppercase select-none md:text-[16vw] lg:text-[14vw]"
+        "text-[18vw] leading-none font-black tracking-tight text-white uppercase select-none md:text-[16vw] xl:text-[14vw]"
 
     return (
         <>
@@ -132,11 +132,11 @@ export default function LandingPreview() {
 
             <section id="preview" ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black text-white">
                 <div ref={contentRef} className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 pt-24 pb-10 md:gap-10">
-                    <div className="max-w-2xl flex-none text-center">
-                        <h2 className="text-2xl font-black uppercase tracking-tight text-white md:text-4xl lg:text-5xl">
+                    <div className="max-w-3xl flex-none text-center">
+                        <h2 className="text-2xl font-black uppercase text-white md:text-4xl lg:text-5xl">
                             Intip Sekilas Purpaw
                         </h2>
-                        <p className="mt-3 text-sm text-white/60 md:text-base">
+                        <p className="mt-3 mx-auto text-base text-white/80 md:text-lg">
                             Lanjutkan scroll untuk menggeser pratinjau antarmuka — dari ponsel hingga tablet.
                         </p>
                     </div>

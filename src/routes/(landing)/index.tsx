@@ -10,6 +10,7 @@ import FeatureScrollytelling from "@/components/landing/feature-scrollytelling"
 import LandingPreview from "@/components/landing/preview"
 import { ModernSeparator } from "@/components/glymph/modern-separator"
 import LandingAiPowered from "@/components/landing/ai-powered"
+import LandingFaq from "@/components/landing/faq"
 import { LenisScrollContext } from "./route"
 
 const PLAYBACK_ID = "5Bk6THGwzsJuwmtjYhCHzh9wLvaL3lOxa2z1Opr8LSs"
@@ -45,7 +46,7 @@ function LandingMain() {
             hls.loadSource(VIDEO_SRC)
             hls.attachMedia(video)
             hls.on(HlsLib.Events.MANIFEST_PARSED, () => {
-                video.play().catch(() => {})
+                video.play().catch(() => { })
             })
         })
 
@@ -127,7 +128,7 @@ function LandingMain() {
                             </div>
 
                             <div className="absolute bottom-0 right-0">
-                                <SpinningText reverse className="hidden md:block text-base" radius={5}>
+                                <SpinningText reverse className="hidden md:block text-base bg-black outline outline-white/20 outline-offset-12 rounded-full" radius={5}>
                                     AI-Powered • AI-Powered •
                                 </SpinningText>
                             </div>
@@ -137,11 +138,11 @@ function LandingMain() {
             </section>
             <FeatureScrollytelling />
             <LandingPreview />
-            <div className="w-full px-6 xl:px-0" aria-hidden="true">
+            <div className="w-full px-6 xl:px-0 pt-6" aria-hidden="true">
                 <ModernSeparator />
             </div>
             <LandingAiPowered />
-            <section className="h-svh"></section>
+            <LandingFaq />
         </>
     )
 }

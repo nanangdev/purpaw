@@ -9,10 +9,12 @@ import { EqualsIcon, XIcon } from "@phosphor-icons/react"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { motion } from "motion/react"
 import { PawCursor } from "@/components/cursor/paw-cursor"
+import { TextRoll } from "@/components/motion/text-roll"
+import LandingFooter from "@/components/landing/footer"
 
 // Exposes a `scrollToId(id)` helper backed by the global Lenis instance so any
 // descendant (e.g. the hero CTA in index.tsx) can smooth-scroll consistently.
-export const LenisScrollContext = createContext<(id: string) => void>(() => {})
+export const LenisScrollContext = createContext<(id: string) => void>(() => { })
 
 export const Route = createFileRoute("/(landing)")({
     component: LandingLayout,
@@ -99,7 +101,7 @@ function LandingLayout() {
                 className={`fixed w-full z-99 transition-all duration-300 top-0 left-0 right-0 px-0 md:px-2 ${isAtTop ? "top-0 md:top-2" : "top-0"
                     }`}
             >
-                <div className={`relative max-w-7xl mx-auto flex flex-row items-center justify-between transition-all duration-300 ${isAtTop ? "bg-transparent h-15 md:h-18 p-4 xl:px-0 w-full border border-transparent" : "bg-transparent backdrop-blur-lg h-auto p-2 md:p-3 px-4 md:px-5 xl:px-4 w-[calc(100%-32px)] md:w-[calc(100%-64px)] xl:w-[calc(100%-120px)] rounded-full border border-border/20 mt-4"
+                <div className={`relative max-w-7xl mx-auto flex flex-row items-center justify-between transition-all duration-300 ${isAtTop ? "bg-transparent h-15 md:h-18 p-4 xl:px-0 w-full border border-transparent!" : "bg-transparent backdrop-blur-lg h-auto p-2 md:p-3 px-4 md:px-5 xl:px-4 w-[calc(100%-32px)] md:w-[calc(100%-64px)] xl:w-[calc(100%-120px)] rounded-full border border-border/20 mt-4"
                     }  ${isMenuOpen ? "bg-zinc-950/95 border-white/10" : "bg-transparent"}`}>
                     <div className="flex-1 flex justify-end md:justify-start order-2 md:order-1">
                         <button
@@ -168,24 +170,31 @@ function LandingLayout() {
                                 <div className="flex flex-col items-center gap-1.5 md:gap-2.5 text-center font-black uppercase select-none w-full my-auto py-4">
                                     <a
                                         href="/#features"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
                                         onClick={scrollToSection("features")}
                                     >
-                                        Feature
+                                        <TextRoll center>Feature</TextRoll>
                                     </a>
                                     <a
                                         href="/#preview"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
                                         onClick={scrollToSection("preview")}
                                     >
-                                        Preview
+                                        <TextRoll center>Preview</TextRoll>
                                     </a>
                                     <a
                                         href="/#ai"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white hover:text-zinc-500 transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
                                         onClick={scrollToSection("ai")}
                                     >
-                                        AI
+                                        <TextRoll center>AI</TextRoll>
+                                    </a>
+                                    <a
+                                        href="/#faq"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
+                                        onClick={scrollToSection("faq")}
+                                    >
+                                        <TextRoll center>FAQ</TextRoll>
                                     </a>
                                     {/* item lainnya */}
                                 </div>
@@ -209,9 +218,7 @@ function LandingLayout() {
                 <Outlet />
             </main>
 
-            <footer>
-
-            </footer>
+            <LandingFooter />
         </LenisScrollContext.Provider>
     )
 }
