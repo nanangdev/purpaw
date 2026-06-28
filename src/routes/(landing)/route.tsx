@@ -11,6 +11,7 @@ import { motion } from "motion/react"
 import { PawCursor } from "@/components/cursor/paw-cursor"
 import { TextRoll } from "@/components/motion/text-roll"
 import LandingFooter from "@/components/landing/footer"
+import { CookieConsent } from "@/components/layout/cookie-consent"
 
 // Exposes a `scrollToId(id)` helper backed by the global Lenis instance so any
 // descendant (e.g. the hero CTA in index.tsx) can smooth-scroll consistently.
@@ -24,6 +25,8 @@ function LandingLayout() {
     const [isAtTop, setIsAtTop] = useState(true)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const lenisRef = useRef<Lenis | null>(null)
+    const menuButtonRef = useRef<HTMLButtonElement>(null)
+    const menuPanelRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -61,6 +64,54 @@ function LandingLayout() {
         }
     }, [])
 
+    // Menu (dialog) focus management: move focus in on open, trap Tab, close on
+    // Escape, and restore focus to the toggle when it closes.
+    useEffect(() => {
+        if (!isMenuOpen) return
+        const button = menuButtonRef.current
+        const panel = menuPanelRef.current
+        if (!button || !panel) return
+
+        const collectFocusables = (): HTMLElement[] => {
+            const els: HTMLElement[] = [button]
+            panel
+                .querySelectorAll<HTMLElement>(
+                    'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+                )
+                .forEach((el) => els.push(el))
+            return els
+        }
+
+        const initial = collectFocusables()
+        initial[1]?.focus?.()
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                e.preventDefault()
+                setIsMenuOpen(false)
+                return
+            }
+            if (e.key !== "Tab") return
+            const list = collectFocusables()
+            if (list.length === 0) return
+            const first = list[0]
+            const last = list[list.length - 1]
+            const active = document.activeElement as HTMLElement | null
+            if (e.shiftKey && active === first) {
+                e.preventDefault()
+                last.focus()
+            } else if (!e.shiftKey && active === last) {
+                e.preventDefault()
+                first.focus()
+            }
+        }
+        document.addEventListener("keydown", onKeyDown)
+        return () => {
+            document.removeEventListener("keydown", onKeyDown)
+            button.focus()
+        }
+    }, [isMenuOpen])
+
     const scrollToId = (id: string) => {
         const target = document.getElementById(id)
         if (!target) return
@@ -77,6 +128,16 @@ function LandingLayout() {
 
     return (
         <LenisScrollContext.Provider value={scrollToId}>
+            <a
+                href="#main-content"
+                className="group fixed left-1/2 top-0 z-200 block -translate-x-1/2 -translate-y-full opacity-0 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:translate-y-4 focus:opacity-100 focus:pointer-events-auto focus:outline-none"
+            >
+                <div className="flex items-center gap-3 px-5 py-3 rounded-full bg-black backdrop-blur-md text-white border border-white/20 transition-all duration-300">
+                    <span className="text-sm font-semibold tracking-wide text-white group-hover:text-white/80 transition-colors duration-300">
+                        Lewati ke konten utama
+                    </span>
+                </div>
+            </a>
             <style>{`
                 html.lenis, html.lenis body { height: auto; }
                 .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -105,7 +166,11 @@ function LandingLayout() {
                     }  ${isMenuOpen ? "bg-zinc-950/95 border-white/10" : "bg-transparent"}`}>
                     <div className="flex-1 flex justify-end md:justify-start order-2 md:order-1">
                         <button
+                            ref={menuButtonRef}
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            aria-expanded={isMenuOpen}
+                            aria-haspopup="menu"
+                            aria-controls="landing-menu"
                             className={`relative rounded-full p-1 md:p-1.5 pr-3 h-auto text-white flex flex-row items-center gap-1.5 md:gap-3 md:pr-4 hover:brightness-105 cursor-pointer ${isAtTop ? "md:bg-black/90 md:backdrop-blur-2xl" : "md:bg-transparent md:backdrop-blur-none"}`}
                         >
                             <div className={`hidden absolute inset-0 rounded-full glow-ring-outer pointer-events-none ${isAtTop ? "md:block" : "md:hidden"}`} />
@@ -136,6 +201,12 @@ function LandingLayout() {
 
                     {/* Dropdown Menu Panel (Inherits width and curves of the Header Container) */}
                     <motion.div
+                        ref={menuPanelRef}
+                        id="landing-menu"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Menu navigasi"
+                        inert={!isMenuOpen}
                         initial={false}
                         animate={isMenuOpen ? "open" : "closed"}
                         variants={{
@@ -170,28 +241,28 @@ function LandingLayout() {
                                 <div className="flex flex-col items-center gap-1.5 md:gap-2.5 text-center font-black uppercase select-none w-full my-auto py-4">
                                     <a
                                         href="/#features"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                                         onClick={scrollToSection("features")}
                                     >
                                         <TextRoll center>Feature</TextRoll>
                                     </a>
                                     <a
                                         href="/#preview"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                                         onClick={scrollToSection("preview")}
                                     >
                                         <TextRoll center>Preview</TextRoll>
                                     </a>
                                     <a
                                         href="/#ai"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                                         onClick={scrollToSection("ai")}
                                     >
                                         <TextRoll center>AI</TextRoll>
                                     </a>
                                     <a
                                         href="/#faq"
-                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300"
+                                        className="text-3xl md:text-4xl lg:text-5xl text-white transition-colors duration-300 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                                         onClick={scrollToSection("faq")}
                                     >
                                         <TextRoll center>FAQ</TextRoll>
@@ -214,11 +285,13 @@ function LandingLayout() {
                 </div>
             </header>
 
-            <main className="bg-black text-white">
+            <main id="main-content" tabIndex={-1} className="bg-black text-white focus:outline-none">
                 <Outlet />
             </main>
 
             <LandingFooter />
+            {/* PREVIEW ONLY — UI cookie consent, belum disistemkan */}
+            <CookieConsent />
         </LenisScrollContext.Provider>
     )
 }

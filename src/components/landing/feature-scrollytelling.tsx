@@ -150,7 +150,7 @@ export default function FeatureScrollytelling() {
                                     <motion.img
                                         key={activeIndex}
                                         src={blocks[activeIndex].image}
-                                        alt="Purpaw Character"
+                                        alt={blocks[activeIndex].title}
                                         initial={{ opacity: 0, y: 80 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -80 }}

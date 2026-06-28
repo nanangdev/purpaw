@@ -17,7 +17,7 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Purpaw — Perawatan Kucing Cerdas dengan AI",
       },
     ],
     links: [
@@ -38,12 +38,18 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="id">
       <head>
         <HeadContent />
       </head>
       <body>
         <TopLoadingBar />
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              '<div style="position:fixed;inset-inline:0;bottom:0;z-index:200;padding:0.75rem 1rem;background-color:var(--destructive);color:#fff;text-align:center;font-size:0.875rem;font-weight:500;">JavaScript dinonaktifkan. Aktifkan JavaScript untuk pengalaman terbaik di Purpaw.</div>',
+          }}
+        />
         <TooltipProvider>{children}</TooltipProvider>
         <TanStackDevtools
           config={{

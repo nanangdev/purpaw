@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
+import type { KeyboardEvent } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import { TextAnimate } from "../motion/text-animate"
@@ -105,11 +106,17 @@ function AccordionItem({
     isOpen: boolean
     onToggle: () => void
 }) {
+    const reactId = useId()
+    const buttonId = `faq-trigger-${reactId}`
+    const panelId = `faq-content-${reactId}`
     return (
         <div
             className="border-b last:border-b-0 border-white/80 transition-colors duration-200">
             <button
                 onClick={onToggle}
+                id={buttonId}
+                aria-expanded={isOpen}
+                aria-controls={panelId}
                 className="flex w-full items-center justify-between gap-6 py-5 text-start cursor-pointer"
             >
                 <span className="text-base font-medium text-white/90 md:text-xl">
@@ -131,6 +138,9 @@ function AccordionItem({
                 {isOpen && (
                     <motion.div
                         key="content"
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={buttonId}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -165,6 +175,20 @@ export default function LandingFaq() {
         setOpenIndex(null)
     }
 
+    const handleTabKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+        const idx = FAQ_DATA.findIndex((c) => c.id === activeTab)
+        let nextIdx: number | null = null
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") nextIdx = (idx + 1) % FAQ_DATA.length
+        else if (e.key === "ArrowLeft" || e.key === "ArrowUp") nextIdx = (idx - 1 + FAQ_DATA.length) % FAQ_DATA.length
+        else if (e.key === "Home") nextIdx = 0
+        else if (e.key === "End") nextIdx = FAQ_DATA.length - 1
+        if (nextIdx === null) return
+        e.preventDefault()
+        const nextCat = FAQ_DATA[nextIdx]
+        handleTabChange(nextCat.id)
+        requestAnimationFrame(() => document.getElementById(`faq-tab-${nextCat.id}`)?.focus())
+    }
+
     const handleAccordionToggle = (index: number) => {
         setOpenIndex((prev) => (prev === index ? null : index))
     }
@@ -187,10 +211,19 @@ export default function LandingFaq() {
                 <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
                     {/* Tabs — sticky */}
                     <div className="sticky w-full top-24 self-start z-10 flex-none lg:w-56 xl:w-64 lg:py-4">
-                        <div className="w-full flex justify-center gap-0.5 lg:gap-2 overflow-x-auto rounded-full bg-white lg:bg-transparent p-1 lg:p-0 scrollbar-none lg:flex-col lg:justify-start lg:rounded-2xl lg:overflow-visible">
+                        <div
+                            role="tablist"
+                            aria-label="Kategori FAQ"
+                            onKeyDown={handleTabKeyDown}
+                            className="w-full flex justify-center gap-0.5 lg:gap-2 overflow-x-auto rounded-full bg-white lg:bg-transparent p-1 lg:p-0 scrollbar-none lg:flex-col lg:justify-start lg:rounded-2xl lg:overflow-visible">
                             {FAQ_DATA.map((cat) => (
                                 <button
                                     key={cat.id}
+                                    role="tab"
+                                    id={`faq-tab-${cat.id}`}
+                                    aria-selected={activeTab === cat.id}
+                                    aria-controls="faq-tabpanel"
+                                    tabIndex={activeTab === cat.id ? 0 : -1}
                                     onClick={() => handleTabChange(cat.id)}
                                     className={cn(
                                         "relative flex-1 lg:flex-none rounded-full px-5 py-2.5 text-base font-medium lg:bg-white/10 text-black lg:text-white transition-colors duration-200 cursor-pointer z-10",
@@ -218,7 +251,12 @@ export default function LandingFaq() {
                     </div>
 
                     {/* Accordion */}
-                    <div className="flex-1 min-w-0">
+                    <div
+                        role="tabpanel"
+                        id="faq-tabpanel"
+                        aria-labelledby={`faq-tab-${activeTab}`}
+                        tabIndex={0}
+                        className="flex-1 min-w-0 focus:outline-none">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeTab}

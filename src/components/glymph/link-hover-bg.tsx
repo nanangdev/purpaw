@@ -33,7 +33,7 @@ const Link000 = ({
         <a
             href={href}
             className={cn(
-                "group relative flex items-center w-fit",
+                "group relative flex items-center w-fit rounded-md outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 className,
                 "before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:h-[0.05em] before:w-full before:bg-current before:content-['']",
                 "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-ease-in-out",
@@ -58,7 +58,7 @@ const Link001 = ({
             href={href}
             target="_blank"
             className={cn(
-                "group relative flex items-center w-fit",
+                "group relative flex items-center w-fit rounded-md outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 "before:pointer-events-none before:absolute before:left-0 before:top-[1.5em] before:h-[0.05em] before:w-full before:bg-current before:content-['']",
                 "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-in-out",
                 "hover:before:origin-left hover:before:scale-x-100",
@@ -97,7 +97,7 @@ const Link002 = ({
         <a
             href={href}
             className={cn(
-                "group relative flex items-center w-fit",
+                "group relative flex items-center w-fit rounded-md outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 className,
                 "before:pointer-events-none before:absolute before:left-0 before:top-[1.5em] before:h-[0.05em] before:w-full before:bg-current before:content-['']",
                 "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-in-out",
@@ -137,7 +137,7 @@ const Link003 = ({
         <a
             href={href}
             className={cn(
-                "group relative flex items-center w-fit",
+                "group relative flex items-center w-fit rounded-md outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 className,
                 "before:pointer-events-none before:absolute before:left-0 before:top-[1.5em] before:h-[0.05em] before:w-full before:bg-current before:content-['']",
                 "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-in-out",
@@ -178,7 +178,7 @@ const Link004 = ({
         <a
             href={href}
             className={cn(
-                "group relative flex items-center w-fit",
+                "group relative flex items-center w-fit rounded-md outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 className,
                 "before:pointer-events-none before:absolute before:left-0 before:w-full before:bg-white before:content-['']",
                 "before:origin-right before:scale-x-0 before:transition-all before:duration-300 before:ease-in-out",
@@ -219,7 +219,7 @@ const Link005 = ({
             href={href}
             className={cn(
                 className,
-                "group relative flex items-center w-fit",
+                "group relative flex items-center w-fit rounded-md outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 "before:pointer-events-none before:absolute before:left-0 before:w-full before:bg-white before:content-['']",
                 "before:scale-x-1 before:transition-all before:duration-300 before:ease-in-out",
                 "before:origin-left md:before:top-0",

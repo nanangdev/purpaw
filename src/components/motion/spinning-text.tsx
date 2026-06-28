@@ -1,7 +1,8 @@
 "use client"
 
-import React, { type ComponentPropsWithoutRef } from "react"
-import { motion, type Transition, type Variants } from "motion/react"
+import type { ComponentPropsWithoutRef, CSSProperties } from "react"
+import { motion, useReducedMotion } from "motion/react"
+import type { Transition, Variants } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -41,6 +42,7 @@ export function SpinningText({
     className,
     style,
 }: SpinningTextProps) {
+    const reduce = useReducedMotion()
     if (typeof children !== "string" && !Array.isArray(children)) {
         throw new Error("children must be a string or an array of strings")
     }
@@ -56,16 +58,17 @@ export function SpinningText({
     const letters = children.split("")
     letters.push(" ")
 
-    const finalTransition: Transition = {
-        ...BASE_TRANSITION,
-        ...transition,
-        duration: (transition as { duration?: number })?.duration ?? duration,
-    }
+    const finalTransition: Transition = reduce
+        ? { duration: 0 }
+        : {
+              ...BASE_TRANSITION,
+              ...transition,
+              duration: (transition as { duration?: number } | undefined)?.duration ?? duration,
+          }
 
-    const containerVariants: Variants = {
-        visible: { rotate: reverse ? -360 : 360 },
-        ...variants?.container,
-    }
+    const containerVariants: Variants = reduce
+        ? { visible: { rotate: 0 }, ...variants?.container }
+        : { visible: { rotate: reverse ? -360 : 360 }, ...variants?.container }
 
     const itemVariants: Variants = {
         ...BASE_ITEM_VARIANTS,
@@ -102,7 +105,7 @@ export function SpinningText({
                   translateY(calc(var(--radius, 5) * -1ch))
                 `,
                             transformOrigin: "center",
-                        } as React.CSSProperties
+                        } as CSSProperties
                     }
                 >
                     {letter}
