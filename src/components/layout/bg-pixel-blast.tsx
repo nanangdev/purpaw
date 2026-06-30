@@ -77,12 +77,12 @@ const createTouchTexture = (): TouchTexture => {
   };
   const drawPoint = (p: TouchPoint) => {
     const pos = { x: p.x * size, y: (1 - p.y) * size };
-    let intensity = 1;
     const easeOutSine = (t: number) => Math.sin((t * Math.PI) / 2);
     const easeOutQuad = (t: number) => -t * (t - 2);
-    if (p.age < maxAge * 0.3) intensity = easeOutSine(p.age / (maxAge * 0.3));
-    else intensity = easeOutQuad(1 - (p.age - maxAge * 0.3) / (maxAge * 0.7)) || 0;
-    intensity *= p.force;
+    const intensity =
+      (p.age < maxAge * 0.3
+        ? easeOutSine(p.age / (maxAge * 0.3))
+        : easeOutQuad(1 - (p.age - maxAge * 0.3) / (maxAge * 0.7)) || 0) * p.force;
     const color = `${((p.vx + 1) / 2) * 255}, ${((p.vy + 1) / 2) * 255}, ${intensity * 255}`;
     const offset = size * 5;
     ctx.shadowOffsetX = offset;
