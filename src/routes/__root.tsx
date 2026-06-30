@@ -3,6 +3,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { TopLoadingBar } from "@/components/layout/top-loading-bar"
+import { NotFound } from "@/components/not-found"
 
 import appCss from "../styles.css?url"
 
@@ -27,12 +28,7 @@ export const Route = createRootRoute({
       },
     ],
   }),
-  notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>404</h1>
-      <p>The requested page could not be found.</p>
-    </main>
-  ),
+  notFoundComponent: NotFound,
   shellComponent: RootDocument,
 })
 
