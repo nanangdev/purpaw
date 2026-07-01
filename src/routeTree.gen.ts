@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as loginRouteRouteImport } from './routes/(login)/route'
 import { Route as landingRouteRouteImport } from './routes/(landing)/route'
 import { Route as landingIndexRouteImport } from './routes/(landing)/index'
+import { Route as loginOnboardingIndexRouteImport } from './routes/(login)/onboarding/index'
 import { Route as loginLoginIndexRouteImport } from './routes/(login)/login/index'
 import { Route as loginAuth2faRouteImport } from './routes/(login)/auth/2fa'
 
@@ -28,6 +29,11 @@ const landingIndexRoute = landingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => landingRouteRoute,
 } as any)
+const loginOnboardingIndexRoute = loginOnboardingIndexRouteImport.update({
+  id: '/onboarding/',
+  path: '/onboarding/',
+  getParentRoute: () => loginRouteRoute,
+} as any)
 const loginLoginIndexRoute = loginLoginIndexRouteImport.update({
   id: '/login/',
   path: '/login/',
@@ -43,11 +49,13 @@ export interface FileRoutesByFullPath {
   '/': typeof landingIndexRoute
   '/auth/2fa': typeof loginAuth2faRoute
   '/login/': typeof loginLoginIndexRoute
+  '/onboarding/': typeof loginOnboardingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof landingIndexRoute
   '/auth/2fa': typeof loginAuth2faRoute
   '/login': typeof loginLoginIndexRoute
+  '/onboarding': typeof loginOnboardingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -56,12 +64,13 @@ export interface FileRoutesById {
   '/(landing)/': typeof landingIndexRoute
   '/(login)/auth/2fa': typeof loginAuth2faRoute
   '/(login)/login/': typeof loginLoginIndexRoute
+  '/(login)/onboarding/': typeof loginOnboardingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/2fa' | '/login/'
+  fullPaths: '/' | '/auth/2fa' | '/login/' | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/2fa' | '/login'
+  to: '/' | '/auth/2fa' | '/login' | '/onboarding'
   id:
     | '__root__'
     | '/(landing)'
@@ -69,6 +78,7 @@ export interface FileRouteTypes {
     | '/(landing)/'
     | '/(login)/auth/2fa'
     | '/(login)/login/'
+    | '/(login)/onboarding/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -98,6 +108,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof landingIndexRouteImport
       parentRoute: typeof landingRouteRoute
+    }
+    '/(login)/onboarding/': {
+      id: '/(login)/onboarding/'
+      path: '/onboarding'
+      fullPath: '/onboarding/'
+      preLoaderRoute: typeof loginOnboardingIndexRouteImport
+      parentRoute: typeof loginRouteRoute
     }
     '/(login)/login/': {
       id: '/(login)/login/'
@@ -131,11 +148,13 @@ const landingRouteRouteWithChildren = landingRouteRoute._addFileChildren(
 interface loginRouteRouteChildren {
   loginAuth2faRoute: typeof loginAuth2faRoute
   loginLoginIndexRoute: typeof loginLoginIndexRoute
+  loginOnboardingIndexRoute: typeof loginOnboardingIndexRoute
 }
 
 const loginRouteRouteChildren: loginRouteRouteChildren = {
   loginAuth2faRoute: loginAuth2faRoute,
   loginLoginIndexRoute: loginLoginIndexRoute,
+  loginOnboardingIndexRoute: loginOnboardingIndexRoute,
 }
 
 const loginRouteRouteWithChildren = loginRouteRoute._addFileChildren(

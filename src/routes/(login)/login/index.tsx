@@ -342,7 +342,7 @@ function EmailStep({
               value={email}
               onChange={(e) => onEmailChange(e.target.value)}
               disabled={sending}
-              className="text-base w-full h-[3.29rem] rounded-[12px] border pt-4.5 px-4 focus:border-primary/70 focus-visible:border-primary/70 focus-visible:outline-primary/70 transition-all caret-primary disabled:opacity-60"
+              className="text-base w-full h-[3.29rem] rounded-[12px] border pt-4.5 px-4 focus:border-primary/70 focus-visible:border-primary/70 focus-visible:outline-primary/70 transition-all caret-primary dark:caret-blue-500 disabled:opacity-60"
             />
           </div>
 
@@ -470,7 +470,7 @@ function VerifyStep({
                   disabled={busy}
                   aria-label="Kode masuk"
                   placeholder="Masukkan kode"
-                  className="h-11 lg:h-12 w-full mx-auto rounded-lg border border-foreground/30 bg-card text-center font-mono text-xl lg:text-2xl! caret-primary outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                  className="h-11 lg:h-12 w-full mx-auto rounded-lg border border-foreground/30 bg-card text-center font-mono text-xl lg:text-2xl! caret-primary dark:caret-blue-500 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
                 />
               </div>
 
@@ -505,8 +505,8 @@ function VerifyStep({
                     <span>Resend in {cooldown}s</span>
                   ) : (
                     <>
-                      <ArrowClockwiseIcon className="size-4" />
-                      Resend code
+                      <ArrowClockwiseIcon className="size-4 dark:text-blue-500" />
+                      <span className="dark:text-blue-500">Resend code</span>
                     </>
                   )}
                 </button>

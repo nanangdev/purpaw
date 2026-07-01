@@ -55,16 +55,16 @@ export function CookieConsent({ onCustomize, onAccept, onDecline, className }: C
             aria-label="Pemberitahuan cookie"
             className={cn("fixed inset-x-0 bottom-0 z-150 flex justify-center px-4 pb-4 sm:pb-6", className)}
         >
-            <div className="max-h-[80vh] w-full max-w-3xl overflow-y-auto rounded-[20px] border border-black/10 bg-white/90 p-4 text-neutral-900 shadow-[0_12px_44px_rgba(0,0,0,0.2)] backdrop-blur-2xl sm:p-5">
+            <div className="max-h-[80vh] w-full max-w-3xl overflow-y-auto rounded-[20px] border border-border bg-card/90 p-4 text-card-foreground shadow-[0_12px_44px_rgba(0,0,0,0.2)] backdrop-blur-2xl sm:p-5">
                 {view === "consent" ? (
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-start gap-3">
-                            <span className="flex-none rounded-full bg-black/6 p-2">
+                            <span className="flex-none rounded-full bg-foreground/[0.06] p-2">
                                 <CookieIcon className="size-[18px]" aria-hidden="true" />
                             </span>
-                            <p className="text-[13px] leading-relaxed text-neutral-800">
+                            <p className="text-[13px] leading-relaxed text-card-foreground/80">
                                 Kami menggunakan cookie untuk mempersonalisasi konten dan menganalisis lalu lintas kami. Baca{" "}
-                                <a href="#" className="font-semibold text-neutral-900 underline-offset-2 hover:underline">
+                                <a href="#" className="font-semibold text-card-foreground underline-offset-2 hover:underline">
                                     Pilihan Privasi
                                 </a>{" "}
                                 untuk menyesuaikan, atau izinkan semua cookie.
@@ -90,29 +90,29 @@ export function CookieConsent({ onCustomize, onAccept, onDecline, className }: C
                 ) : (
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center justify-between gap-4">
-                            <h2 className="text-sm font-semibold text-neutral-900">Sesuaikan Preferensi Cookie</h2>
+                            <h2 className="text-sm font-semibold text-card-foreground">Sesuaikan Preferensi Cookie</h2>
                             <Button variant="ghost" size="icon-lg" aria-label="Tutup" onClick={() => setView("consent")}>
                                 <XIcon aria-hidden="true" />
                             </Button>
                         </div>
-                        <p className="text-[13px] leading-relaxed text-neutral-700">
+                        <p className="text-[13px] leading-relaxed text-card-foreground/70">
                             Kelola bagaimana kami menggunakan cookie. Cookie wajib tidak dapat dinonaktifkan.
                         </p>
-                        <ul className="divide-y divide-black/10">
+                        <ul className="divide-y divide-border">
                             {CATEGORIES.map((cat) => {
                                 const checked = cat.required ? true : prefs[cat.id]
                                 return (
                                     <li key={cat.id} className="flex items-start justify-between gap-4 py-3">
                                         <div className="min-w-0">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-[13px] font-semibold text-neutral-900">{cat.title}</span>
+                                                <span className="text-[13px] font-semibold text-card-foreground">{cat.title}</span>
                                                 {cat.required && (
-                                                    <span className="rounded-full bg-black/6 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-neutral-700">
+                                                    <span className="rounded-full bg-foreground/6 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-card-foreground/70">
                                                         Wajib
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="mt-1 text-[12px] leading-relaxed text-neutral-700">{cat.desc}</p>
+                                            <p className="mt-1 text-[12px] leading-relaxed text-card-foreground/70">{cat.desc}</p>
                                         </div>
                                         <Switch
                                             className="flex-none"
@@ -130,7 +130,8 @@ export function CookieConsent({ onCustomize, onAccept, onDecline, className }: C
                         </ul>
                         <div className="flex items-center justify-between pt-1">
                             <Button
-                                variant="link"
+                                variant="outline"
+                                className="dark:text-blue-500"
                                 size="lg"
                                 onClick={() => {
                                     onDecline?.()

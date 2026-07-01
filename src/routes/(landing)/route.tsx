@@ -188,7 +188,7 @@ function LandingLayout() {
                         </button>
                     </div>
                     <a href="/" title="Purpaw" className="flex-none order-1 md:order-2">
-                        <Paw variant={`${isAtTop ? "filled" : "outline"}`} className={`size-9 transition-all duration-300 ${isAtTop ? "text-primary" : "text-white"}`} />
+                        <Paw variant={`${isAtTop ? "filled" : "outline"}`} className={`size-9 transition-all duration-300 ${isAtTop ? "text-primary dark:text-blue-500" : "text-white"}`} />
                         <span className="sr-only">Purpaw</span>
                     </a>
                     <div className="flex-1 flex flex-row items-center justify-end sr-only md:not-sr-only md:order-3">
