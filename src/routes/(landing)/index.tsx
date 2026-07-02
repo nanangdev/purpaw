@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react"
 import type Hls from "hls.js"
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, Link } from "@tanstack/react-router"
 import { CaretRightIcon } from "@phosphor-icons/react"
 import { DiaTextReveal } from "@/components/motion/dia-text-reveal"
 import { SpinningText } from "@/components/motion/spinning-text"
@@ -112,9 +112,9 @@ function LandingMain() {
                         {/* Left Column Buttons (lg:col-span-7) */}
                         <div className="relative w-full flex flex-row items-end justify-between">
                             <div className="flex flex-wrap items-center gap-4">
-                                <a href="/login" className="bg-linear-to-r from-primary to-primary/90 text-white font-semibold text-sm px-8 py-3.5 rounded-full hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_20px_rgba(239,68,68,0.2)] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black">
+                                <Link to="/login" className="bg-linear-to-r from-primary to-primary/90 text-white font-semibold text-sm px-8 py-3.5 rounded-full hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_20px_rgba(239,68,68,0.2)] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black">
                                     Start Now
-                                </a>
+                                </Link>
                                 <button
                                     onClick={() => scrollToId("features")}
                                     className="relative bg-black/90 backdrop-blur-2xl rounded-full p-1 pl-5 h-auto text-white flex flex-row items-center gap-5 hover:brightness-105 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"

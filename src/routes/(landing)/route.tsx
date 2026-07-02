@@ -12,6 +12,7 @@ import { PawCursor } from "@/components/cursor/paw-cursor"
 import { TextRoll } from "@/components/motion/text-roll"
 import LandingFooter from "@/components/landing/footer"
 import { CookieConsent } from "@/components/layout/cookie-consent"
+import { Link } from "@tanstack/react-router"
 
 // Exposes a `scrollToId(id)` helper backed by the global Lenis instance so any
 // descendant (e.g. the hero CTA in index.tsx) can smooth-scroll consistently.
@@ -193,9 +194,9 @@ function LandingLayout() {
                     </a>
                     <div className="flex-1 flex flex-row items-center justify-end sr-only md:not-sr-only md:order-3">
                         <Button size="lg" className="px-12" asChild>
-                            <a href="/login" title="Masuk">
+                            <Link to="/login" title="Masuk">
                                 Mulai
-                            </a>
+                            </Link>
                         </Button>
                     </div>
 
@@ -276,9 +277,9 @@ function LandingLayout() {
                         <div className="w-full bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-full p-2 md:px-4 flex flex-row items-center justify-between gap-3 relative z-10 flex-none">
                             <span className="text-white/80 uppercase ml-2">Not logged in</span>
                             <Button size="lg" className="px-8 -mr-1" asChild>
-                                <a href="/login" title="Masuk" onClick={() => setIsMenuOpen(false)}>
+                                <Link to="/login" title="Masuk" onClick={() => setIsMenuOpen(false)}>
                                     Masuk
-                                </a>
+                                </Link>
                             </Button>
                         </div>
                     </motion.div>

@@ -11,10 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as loginRouteRouteImport } from './routes/(login)/route'
 import { Route as landingRouteRouteImport } from './routes/(landing)/route'
+import { Route as appRouteRouteImport } from './routes/(app)/route'
 import { Route as landingIndexRouteImport } from './routes/(landing)/index'
 import { Route as loginOnboardingIndexRouteImport } from './routes/(login)/onboarding/index'
 import { Route as loginLoginIndexRouteImport } from './routes/(login)/login/index'
+import { Route as appSettingsIndexRouteImport } from './routes/(app)/settings/index'
 import { Route as loginAuth2faRouteImport } from './routes/(login)/auth/2fa'
+import { Route as appSettingsProfileRouteImport } from './routes/(app)/settings/profile'
+import { Route as appSettingsPrivacyRouteImport } from './routes/(app)/settings/privacy'
+import { Route as appSettingsGeneralRouteImport } from './routes/(app)/settings/general'
+import { Route as appSettingsAccountRouteImport } from './routes/(app)/settings/account'
+import { Route as appSettingsAboutRouteImport } from './routes/(app)/settings/about'
 
 const loginRouteRoute = loginRouteRouteImport.update({
   id: '/(login)',
@@ -22,6 +29,10 @@ const loginRouteRoute = loginRouteRouteImport.update({
 } as any)
 const landingRouteRoute = landingRouteRouteImport.update({
   id: '/(landing)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const appRouteRoute = appRouteRouteImport.update({
+  id: '/(app)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const landingIndexRoute = landingIndexRouteImport.update({
@@ -39,49 +50,126 @@ const loginLoginIndexRoute = loginLoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => loginRouteRoute,
 } as any)
+const appSettingsIndexRoute = appSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => appRouteRoute,
+} as any)
 const loginAuth2faRoute = loginAuth2faRouteImport.update({
   id: '/auth/2fa',
   path: '/auth/2fa',
   getParentRoute: () => loginRouteRoute,
 } as any)
+const appSettingsProfileRoute = appSettingsProfileRouteImport.update({
+  id: '/settings/profile',
+  path: '/settings/profile',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appSettingsPrivacyRoute = appSettingsPrivacyRouteImport.update({
+  id: '/settings/privacy',
+  path: '/settings/privacy',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appSettingsGeneralRoute = appSettingsGeneralRouteImport.update({
+  id: '/settings/general',
+  path: '/settings/general',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appSettingsAccountRoute = appSettingsAccountRouteImport.update({
+  id: '/settings/account',
+  path: '/settings/account',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appSettingsAboutRoute = appSettingsAboutRouteImport.update({
+  id: '/settings/about',
+  path: '/settings/about',
+  getParentRoute: () => appRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof landingIndexRoute
+  '/settings/about': typeof appSettingsAboutRoute
+  '/settings/account': typeof appSettingsAccountRoute
+  '/settings/general': typeof appSettingsGeneralRoute
+  '/settings/privacy': typeof appSettingsPrivacyRoute
+  '/settings/profile': typeof appSettingsProfileRoute
   '/auth/2fa': typeof loginAuth2faRoute
+  '/settings/': typeof appSettingsIndexRoute
   '/login/': typeof loginLoginIndexRoute
   '/onboarding/': typeof loginOnboardingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof landingIndexRoute
+  '/settings/about': typeof appSettingsAboutRoute
+  '/settings/account': typeof appSettingsAccountRoute
+  '/settings/general': typeof appSettingsGeneralRoute
+  '/settings/privacy': typeof appSettingsPrivacyRoute
+  '/settings/profile': typeof appSettingsProfileRoute
   '/auth/2fa': typeof loginAuth2faRoute
+  '/settings': typeof appSettingsIndexRoute
   '/login': typeof loginLoginIndexRoute
   '/onboarding': typeof loginOnboardingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/(app)': typeof appRouteRouteWithChildren
   '/(landing)': typeof landingRouteRouteWithChildren
   '/(login)': typeof loginRouteRouteWithChildren
   '/(landing)/': typeof landingIndexRoute
+  '/(app)/settings/about': typeof appSettingsAboutRoute
+  '/(app)/settings/account': typeof appSettingsAccountRoute
+  '/(app)/settings/general': typeof appSettingsGeneralRoute
+  '/(app)/settings/privacy': typeof appSettingsPrivacyRoute
+  '/(app)/settings/profile': typeof appSettingsProfileRoute
   '/(login)/auth/2fa': typeof loginAuth2faRoute
+  '/(app)/settings/': typeof appSettingsIndexRoute
   '/(login)/login/': typeof loginLoginIndexRoute
   '/(login)/onboarding/': typeof loginOnboardingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/2fa' | '/login/' | '/onboarding/'
+  fullPaths:
+    | '/'
+    | '/settings/about'
+    | '/settings/account'
+    | '/settings/general'
+    | '/settings/privacy'
+    | '/settings/profile'
+    | '/auth/2fa'
+    | '/settings/'
+    | '/login/'
+    | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/2fa' | '/login' | '/onboarding'
+  to:
+    | '/'
+    | '/settings/about'
+    | '/settings/account'
+    | '/settings/general'
+    | '/settings/privacy'
+    | '/settings/profile'
+    | '/auth/2fa'
+    | '/settings'
+    | '/login'
+    | '/onboarding'
   id:
     | '__root__'
+    | '/(app)'
     | '/(landing)'
     | '/(login)'
     | '/(landing)/'
+    | '/(app)/settings/about'
+    | '/(app)/settings/account'
+    | '/(app)/settings/general'
+    | '/(app)/settings/privacy'
+    | '/(app)/settings/profile'
     | '/(login)/auth/2fa'
+    | '/(app)/settings/'
     | '/(login)/login/'
     | '/(login)/onboarding/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  appRouteRoute: typeof appRouteRouteWithChildren
   landingRouteRoute: typeof landingRouteRouteWithChildren
   loginRouteRoute: typeof loginRouteRouteWithChildren
 }
@@ -100,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof landingRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(app)': {
+      id: '/(app)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof appRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(landing)/': {
@@ -123,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof loginLoginIndexRouteImport
       parentRoute: typeof loginRouteRoute
     }
+    '/(app)/settings/': {
+      id: '/(app)/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof appSettingsIndexRouteImport
+      parentRoute: typeof appRouteRoute
+    }
     '/(login)/auth/2fa': {
       id: '/(login)/auth/2fa'
       path: '/auth/2fa'
@@ -130,8 +232,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof loginAuth2faRouteImport
       parentRoute: typeof loginRouteRoute
     }
+    '/(app)/settings/profile': {
+      id: '/(app)/settings/profile'
+      path: '/settings/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof appSettingsProfileRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/settings/privacy': {
+      id: '/(app)/settings/privacy'
+      path: '/settings/privacy'
+      fullPath: '/settings/privacy'
+      preLoaderRoute: typeof appSettingsPrivacyRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/settings/general': {
+      id: '/(app)/settings/general'
+      path: '/settings/general'
+      fullPath: '/settings/general'
+      preLoaderRoute: typeof appSettingsGeneralRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/settings/account': {
+      id: '/(app)/settings/account'
+      path: '/settings/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof appSettingsAccountRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/settings/about': {
+      id: '/(app)/settings/about'
+      path: '/settings/about'
+      fullPath: '/settings/about'
+      preLoaderRoute: typeof appSettingsAboutRouteImport
+      parentRoute: typeof appRouteRoute
+    }
   }
 }
+
+interface appRouteRouteChildren {
+  appSettingsAboutRoute: typeof appSettingsAboutRoute
+  appSettingsAccountRoute: typeof appSettingsAccountRoute
+  appSettingsGeneralRoute: typeof appSettingsGeneralRoute
+  appSettingsPrivacyRoute: typeof appSettingsPrivacyRoute
+  appSettingsProfileRoute: typeof appSettingsProfileRoute
+  appSettingsIndexRoute: typeof appSettingsIndexRoute
+}
+
+const appRouteRouteChildren: appRouteRouteChildren = {
+  appSettingsAboutRoute: appSettingsAboutRoute,
+  appSettingsAccountRoute: appSettingsAccountRoute,
+  appSettingsGeneralRoute: appSettingsGeneralRoute,
+  appSettingsPrivacyRoute: appSettingsPrivacyRoute,
+  appSettingsProfileRoute: appSettingsProfileRoute,
+  appSettingsIndexRoute: appSettingsIndexRoute,
+}
+
+const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
+  appRouteRouteChildren,
+)
 
 interface landingRouteRouteChildren {
   landingIndexRoute: typeof landingIndexRoute
@@ -162,6 +321,7 @@ const loginRouteRouteWithChildren = loginRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  appRouteRoute: appRouteRouteWithChildren,
   landingRouteRoute: landingRouteRouteWithChildren,
   loginRouteRoute: loginRouteRouteWithChildren,
 }

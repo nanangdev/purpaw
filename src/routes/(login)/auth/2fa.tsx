@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowCounterClockwiseIcon, CheckIcon, XIcon } from '@phosphor-icons/react'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { ActivityIndicator } from '@/components/glymph/activity-indicator'
@@ -132,12 +132,11 @@ function TwoFactor() {
           </Button>
 
           <div className="mt-7 flex flex-col items-center justify-center gap-2 xl:gap-3 text-sm text-primary dark:text-blue-500">
-            <a
-              href="/login"
+            <Link to="/login"
               className="rounded underline-offset-4 hover:text-primary/80 dark:hover:text-blue-500/80 hover:underline"
             >
               Back to login
-            </a>
+            </Link>
             <a
               href="/auth/2fa/backup"
               className="rounded underline-offset-4 hover:text-primary/80 dark:hover:text-blue-500/80 hover:underline"
