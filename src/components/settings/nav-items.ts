@@ -3,7 +3,7 @@ import {
   GearIcon,
   UserCircleIcon,
   UserCircleGearIcon,
-  ShieldIcon,
+  ShieldChevronIcon,
   InfoIcon,
 } from "@phosphor-icons/react"
 
@@ -43,7 +43,7 @@ export const settingsNavItems: SettingsNavItem[] = [
   {
     label: "Privasi",
     to: "/settings/privacy",
-    icon: ShieldIcon,
+    icon: ShieldChevronIcon,
     description: "Data, kuki, dan pelaporan",
   },
   {

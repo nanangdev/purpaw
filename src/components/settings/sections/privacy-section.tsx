@@ -5,6 +5,7 @@ import {
   CaretCircleDownIcon,
   DownloadSimpleIcon,
   FlagIcon,
+  ShieldStarIcon,
 } from "@phosphor-icons/react"
 
 import { Button } from "@/components/ui/button"
@@ -62,23 +63,28 @@ function PrivacySection() {
 
       <SettingsSection title="Privasi">
         <SettingsCard>
-          <SettingsDescription>
-            Pelajari bagaimana informasi Anda dilindungi saat menggunakan produk
-            Purpaw, dan kunjungi{" "}
-            <a
-              href="#"
-              className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
-            >
-              Pusat Privasi
-            </a>{" "}
-            dan{" "}
-            <a
-              href="#"
-              className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
-            >
-              Kebijakan Privasi
-            </a>{" "}
-            kami untuk detail lebih lanjut.
+          <SettingsDescription className="flex flex-row items-start gap-4">
+            <div className="size-12 min-w-12 rounded-md order border-border bg-secondary flex flex-row items-center justify-center">
+              <ShieldStarIcon className="size-8" />
+            </div>
+            <div className="">
+              Pelajari bagaimana informasi Anda dilindungi saat menggunakan produk
+              Purpaw, dan kunjungi{" "}
+              <a
+                href="#"
+                className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
+              >
+                Pusat Privasi
+              </a>{" "}
+              dan{" "}
+              <a
+                href="#"
+                className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
+              >
+                Kebijakan Privasi
+              </a>{" "}
+              kami untuk detail lebih lanjut.
+            </div>
           </SettingsDescription>
 
           <PrivacyDisclosure title="Bagaimana kami melindungi data Anda">

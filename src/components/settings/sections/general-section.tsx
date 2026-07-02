@@ -1,12 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  ArrowClockwiseIcon,
-  CircleHalfIcon,
-  MoonIcon,
-  SunIcon,
-} from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, CheckIcon } from "@phosphor-icons/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,11 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
-import { useTheme, type Theme } from "@/components/theme/theme-provider"
+import { useTheme } from "@/components/theme/theme-provider"
+import { cn } from "@/lib/utils"
 import {
   SettingsCard,
   SettingsRow,
@@ -30,6 +22,63 @@ import {
   defaultLanguage,
   languages,
 } from "@/components/settings/languages"
+
+// Dummy preview (akan diganti aset sungguhan). placehold.co sementara.
+const THEME_PREVIEWS = {
+  light: "https://placehold.co/600x450/ededee/1c1c1e?text=Terang&font=montserrat",
+  auto: "https://placehold.co/600x450/71717a/ffffff?text=Otomatis&font=montserrat",
+  dark: "https://placehold.co/600x450/1c1c1e/ededee?text=Gelap&font=montserrat",
+} as const
+
+function ThemeCard({
+  label,
+  preview,
+  active,
+  onSelect,
+}: {
+  label: string
+  preview: string
+  active: boolean
+  onSelect: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className="group flex flex-col items-center gap-2.5 text-center"
+    >
+      <div
+        className={cn(
+          "relative aspect-video w-full overflow-hidden rounded-md md:rounded-xl ring-1 transition-all",
+          active
+            ? "ring-2 ring-primary ring-offset-2 ring-offset-card"
+            : "ring-border group-hover:ring-foreground/25"
+        )}
+      >
+        <img
+          src={preview}
+          alt={`${label} theme preview`}
+          className="size-full object-cover"
+          loading="lazy"
+        />
+        {active && (
+          <span className="absolute inset-e-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <CheckIcon className="size-3" weight="bold" />
+          </span>
+        )}
+      </div>
+      <span
+        className={cn(
+          "text-xs font-medium",
+          active ? "text-foreground" : "text-foreground/80"
+        )}
+      >
+        {label}
+      </span>
+    </button>
+  )
+}
 
 function GeneralSection() {
   const { theme, setTheme } = useTheme()
@@ -42,34 +91,17 @@ function GeneralSection() {
 
       <SettingsSection title="Preferensi">
         <SettingsCard>
-          <SettingsRow className="flex flex-col w-full items-start" label="Tema" description="Sesuaikan tampilan dengan tema terang, gelap, atau mengikuti sistem.">
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              size="sm"
-              value={theme}
-              onValueChange={(value) => {
-                if (value) setTheme(value as Theme)
-              }}
-            >
-              <ToggleGroupItem value="light">
-                <SunIcon />
-                <span className="hidden sm:inline">Terang</span>
-              </ToggleGroupItem>
-              <ToggleGroupItem value="auto">
-                <CircleHalfIcon />
-                <span className="hidden sm:inline">Otomatis</span>
-              </ToggleGroupItem>
-              <ToggleGroupItem value="dark">
-                <MoonIcon />
-                <span className="hidden sm:inline">Gelap</span>
-              </ToggleGroupItem>
-            </ToggleGroup>
+          <SettingsRow fullWidthControl className="flex flex-col w-full items-start" label="Tema" description="Sesuaikan tampilan dengan tema terang, gelap, atau mengikuti sistem.">
+            <div className="grid w-full grid-cols-3 gap-4">
+              <ThemeCard label="Terang" preview={THEME_PREVIEWS.light} active={theme === "light"} onSelect={() => setTheme("light")} />
+              <ThemeCard label="Otomatis" preview={THEME_PREVIEWS.auto} active={theme === "auto"} onSelect={() => setTheme("auto")} />
+              <ThemeCard label="Gelap" preview={THEME_PREVIEWS.dark} active={theme === "dark"} onSelect={() => setTheme("dark")} />
+            </div>
           </SettingsRow>
 
-          <SettingsRow className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between" label="Bahasa aplikasi" description="Bahasa yang digunakan di seluruh antarmuka Purpaw.">
+          <SettingsRow fullWidthControl className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between" label="Bahasa aplikasi" description="Bahasa yang digunakan di seluruh antarmuka Purpaw.">
             <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger size="default" aria-label="Bahasa aplikasi">
+              <SelectTrigger size="default" aria-label="Bahasa aplikasi" className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

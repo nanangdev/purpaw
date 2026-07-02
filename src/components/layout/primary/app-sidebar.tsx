@@ -1,15 +1,9 @@
 "use client"
 
 import * as React from "react"
-import {
-  HouseSimpleIcon,
-  FirstAidKitIcon,
-  CompassIcon,
-  WalletIcon,
-  UsersIcon,
-} from "@phosphor-icons/react"
 
 import { NavMain } from "@/components/layout/primary/nav-main"
+import { navMain } from "@/components/layout/primary/nav-data"
 import { NavUser } from "@/components/layout/primary/nav-user"
 import {
   Sidebar,
@@ -36,33 +30,6 @@ const data = {
     email: "m@contoh.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
-    {
-      title: "Beranda",
-      url: "/",
-      icon: HouseSimpleIcon,
-    },
-    {
-      title: "Kesehatan",
-      url: "/health",
-      icon: FirstAidKitIcon,
-    },
-    {
-      title: "Peta",
-      url: "/map",
-      icon: CompassIcon,
-    },
-    {
-      title: "Keuangan",
-      url: "/money",
-      icon: WalletIcon,
-    },
-    {
-      title: "Komunitas",
-      url: "/community",
-      icon: UsersIcon,
-    },
-  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -95,7 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="sr-only md:not-sr-only">
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

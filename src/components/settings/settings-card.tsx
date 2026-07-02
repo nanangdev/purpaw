@@ -68,6 +68,8 @@ function SettingsRow({
   description,
   htmlFor,
   className,
+  controlClassName,
+  fullWidthControl = false,
   children,
   ...props
 }: {
@@ -75,6 +77,9 @@ function SettingsRow({
   description?: React.ReactNode
   htmlFor?: string
   className?: string
+  controlClassName?: string
+  /** Lebarkan pembungkus kontrol (input/select) jadi `w-full` di mobile, kembali `auto` mulai md. */
+  fullWidthControl?: boolean
   children?: React.ReactNode
 } & Omit<React.ComponentProps<"div">, "children">) {
   return (
@@ -102,7 +107,15 @@ function SettingsRow({
         )}
       </div>
       {children != null && (
-        <div className="flex shrink-0 w-full md:w-auto items-center gap-2">{children}</div>
+        <div
+          className={cn(
+            "flex shrink-0 items-center gap-2",
+            fullWidthControl ? "w-full md:w-auto" : "md:w-auto",
+            controlClassName
+          )}
+        >
+          {children}
+        </div>
       )}
     </div>
   )
@@ -115,15 +128,15 @@ function SettingsDescription({
   className,
   children,
   ...props
-}: React.ComponentProps<"p">) {
+}: React.ComponentProps<"div">) {
   return (
-    <p
+    <div
       data-slot="settings-description"
       className={cn("px-4 py-3.5 text-sm leading-snug text-foreground/80", className)}
       {...props}
     >
       {children}
-    </p>
+    </div>
   )
 }
 

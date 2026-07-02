@@ -21,7 +21,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { SidebarSimpleIcon } from "@phosphor-icons/react"
+import { EqualsIcon, SidebarSimpleIcon } from "@phosphor-icons/react"
 import { ScrollArea } from "./scroll-area"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
@@ -271,7 +271,8 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <SidebarSimpleIcon weight="light" className="rtl:rotate-180 size-5.5" />
+      <SidebarSimpleIcon weight="light" className="rtl:rotate-180 size-5.5 hidden md:block" />
+      <EqualsIcon className="rtl:rotate-180 size-5.5 block md:hidden" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

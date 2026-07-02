@@ -66,7 +66,7 @@ function ProfileSection() {
           >
             <AvatarUploader initialSrc="/avatars/shadcn.jpg" fallback="PA" />
           </SettingsRow>
-          <SettingsRow className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between gap-1.5" label="Username">
+          <SettingsRow fullWidthControl className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between gap-1.5" label="Username">
             <div className="relative w-full md:w-60">
               <span
                 aria-hidden
@@ -93,7 +93,7 @@ function ProfileSection() {
               />
             </div>
           </SettingsRow>
-          <SettingsRow className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between gap-1.5" label="Nama lengkap">
+          <SettingsRow fullWidthControl className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between gap-1.5" label="Nama lengkap">
             <Input
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -101,7 +101,7 @@ function ProfileSection() {
               className="w-full md:w-60 h-11 border border-foreground/30 bg-card caret-primary dark:caret-blue-500 outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary dark:focus-visible:ring-blue-500"
             />
           </SettingsRow>
-          <SettingsRow className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between gap-1.5" label="Nama panggilan">
+          <SettingsRow fullWidthControl className="flex flex-col md:flex-row w-full items-start md:items-center md:justify-between gap-1.5" label="Nama panggilan">
             <Input
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
