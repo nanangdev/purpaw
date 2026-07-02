@@ -1,14 +1,21 @@
+"use client"
+
 import { AppSidebar } from "@/components/layout/primary/app-sidebar"
 import { NavMobile } from "@/components/layout/primary/nav-mobile"
 import { SiteHeader } from "@/components/layout/primary/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { Outlet, createFileRoute } from "@tanstack/react-router"
+import { cn } from "@/lib/utils"
+import { Outlet, createFileRoute, useRouterState } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/(app)")({
     component: AppLayout,
 })
 
 function AppLayout() {
+    const pathname = useRouterState({ select: (s) => s.location.pathname })
+    const isSettings = pathname.startsWith("/settings")
+    const isSettingsSub = pathname.startsWith("/settings/")
+
     return (
         <SidebarProvider
             style={
@@ -21,11 +28,17 @@ function AppLayout() {
         >
             <AppSidebar variant="inset" />
             <SidebarInset>
-                <SiteHeader />
-                <main className="flex flex-1 flex-col pb-[calc(var(--bottom-nav-height)_+_env(safe-area-inset-bottom)_+_var(--spacing)*6)] md:pb-0">
+                <SiteHeader className={cn(isSettingsSub && "max-md:hidden")} />
+                <main
+                    className={cn(
+                        "flex flex-1 flex-col md:pb-0",
+                        !isSettings &&
+                        "pb-[calc(var(--bottom-nav-height)+env(safe-area-inset-bottom)+var(--spacing)*6)]"
+                    )}
+                >
                     <Outlet />
                 </main>
-                <NavMobile />
+                {!isSettings && <NavMobile />}
             </SidebarInset>
         </SidebarProvider>
     )

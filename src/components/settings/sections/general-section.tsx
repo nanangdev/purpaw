@@ -87,7 +87,7 @@ function GeneralSection() {
 
   return (
     <div className="space-y-6">
-      <h2 className="px-1 text-xl font-semibold tracking-tight md:sr-only">Umum</h2>
+      <h2 className="px-1 text-xl font-semibold tracking-tight sr-only">Umum</h2>
 
       <SettingsSection title="Preferensi">
         <SettingsCard>

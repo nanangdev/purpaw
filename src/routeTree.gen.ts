@@ -13,6 +13,8 @@ import { Route as loginRouteRouteImport } from './routes/(login)/route'
 import { Route as landingRouteRouteImport } from './routes/(landing)/route'
 import { Route as appRouteRouteImport } from './routes/(app)/route'
 import { Route as landingIndexRouteImport } from './routes/(landing)/index'
+import { Route as appGameRouteImport } from './routes/(app)/game'
+import { Route as appSettingsRouteRouteImport } from './routes/(app)/settings/route'
 import { Route as loginOnboardingIndexRouteImport } from './routes/(login)/onboarding/index'
 import { Route as loginLoginIndexRouteImport } from './routes/(login)/login/index'
 import { Route as appSettingsIndexRouteImport } from './routes/(app)/settings/index'
@@ -40,6 +42,16 @@ const landingIndexRoute = landingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => landingRouteRoute,
 } as any)
+const appGameRoute = appGameRouteImport.update({
+  id: '/game',
+  path: '/game',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appSettingsRouteRoute = appSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => appRouteRoute,
+} as any)
 const loginOnboardingIndexRoute = loginOnboardingIndexRouteImport.update({
   id: '/onboarding/',
   path: '/onboarding/',
@@ -51,9 +63,9 @@ const loginLoginIndexRoute = loginLoginIndexRouteImport.update({
   getParentRoute: () => loginRouteRoute,
 } as any)
 const appSettingsIndexRoute = appSettingsIndexRouteImport.update({
-  id: '/settings/',
-  path: '/settings/',
-  getParentRoute: () => appRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => appSettingsRouteRoute,
 } as any)
 const loginAuth2faRoute = loginAuth2faRouteImport.update({
   id: '/auth/2fa',
@@ -61,32 +73,34 @@ const loginAuth2faRoute = loginAuth2faRouteImport.update({
   getParentRoute: () => loginRouteRoute,
 } as any)
 const appSettingsProfileRoute = appSettingsProfileRouteImport.update({
-  id: '/settings/profile',
-  path: '/settings/profile',
-  getParentRoute: () => appRouteRoute,
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => appSettingsRouteRoute,
 } as any)
 const appSettingsPrivacyRoute = appSettingsPrivacyRouteImport.update({
-  id: '/settings/privacy',
-  path: '/settings/privacy',
-  getParentRoute: () => appRouteRoute,
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => appSettingsRouteRoute,
 } as any)
 const appSettingsGeneralRoute = appSettingsGeneralRouteImport.update({
-  id: '/settings/general',
-  path: '/settings/general',
-  getParentRoute: () => appRouteRoute,
+  id: '/general',
+  path: '/general',
+  getParentRoute: () => appSettingsRouteRoute,
 } as any)
 const appSettingsAccountRoute = appSettingsAccountRouteImport.update({
-  id: '/settings/account',
-  path: '/settings/account',
-  getParentRoute: () => appRouteRoute,
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => appSettingsRouteRoute,
 } as any)
 const appSettingsAboutRoute = appSettingsAboutRouteImport.update({
-  id: '/settings/about',
-  path: '/settings/about',
-  getParentRoute: () => appRouteRoute,
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => appSettingsRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/settings': typeof appSettingsRouteRouteWithChildren
+  '/game': typeof appGameRoute
   '/': typeof landingIndexRoute
   '/settings/about': typeof appSettingsAboutRoute
   '/settings/account': typeof appSettingsAccountRoute
@@ -99,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/onboarding/': typeof loginOnboardingIndexRoute
 }
 export interface FileRoutesByTo {
+  '/game': typeof appGameRoute
   '/': typeof landingIndexRoute
   '/settings/about': typeof appSettingsAboutRoute
   '/settings/account': typeof appSettingsAccountRoute
@@ -115,6 +130,8 @@ export interface FileRoutesById {
   '/(app)': typeof appRouteRouteWithChildren
   '/(landing)': typeof landingRouteRouteWithChildren
   '/(login)': typeof loginRouteRouteWithChildren
+  '/(app)/settings': typeof appSettingsRouteRouteWithChildren
+  '/(app)/game': typeof appGameRoute
   '/(landing)/': typeof landingIndexRoute
   '/(app)/settings/about': typeof appSettingsAboutRoute
   '/(app)/settings/account': typeof appSettingsAccountRoute
@@ -129,6 +146,8 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/settings'
+    | '/game'
     | '/'
     | '/settings/about'
     | '/settings/account'
@@ -141,6 +160,7 @@ export interface FileRouteTypes {
     | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/game'
     | '/'
     | '/settings/about'
     | '/settings/account'
@@ -156,6 +176,8 @@ export interface FileRouteTypes {
     | '/(app)'
     | '/(landing)'
     | '/(login)'
+    | '/(app)/settings'
+    | '/(app)/game'
     | '/(landing)/'
     | '/(app)/settings/about'
     | '/(app)/settings/account'
@@ -204,6 +226,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof landingIndexRouteImport
       parentRoute: typeof landingRouteRoute
     }
+    '/(app)/game': {
+      id: '/(app)/game'
+      path: '/game'
+      fullPath: '/game'
+      preLoaderRoute: typeof appGameRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/settings': {
+      id: '/(app)/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof appSettingsRouteRouteImport
+      parentRoute: typeof appRouteRoute
+    }
     '/(login)/onboarding/': {
       id: '/(login)/onboarding/'
       path: '/onboarding'
@@ -220,10 +256,10 @@ declare module '@tanstack/react-router' {
     }
     '/(app)/settings/': {
       id: '/(app)/settings/'
-      path: '/settings'
+      path: '/'
       fullPath: '/settings/'
       preLoaderRoute: typeof appSettingsIndexRouteImport
-      parentRoute: typeof appRouteRoute
+      parentRoute: typeof appSettingsRouteRoute
     }
     '/(login)/auth/2fa': {
       id: '/(login)/auth/2fa'
@@ -234,43 +270,43 @@ declare module '@tanstack/react-router' {
     }
     '/(app)/settings/profile': {
       id: '/(app)/settings/profile'
-      path: '/settings/profile'
+      path: '/profile'
       fullPath: '/settings/profile'
       preLoaderRoute: typeof appSettingsProfileRouteImport
-      parentRoute: typeof appRouteRoute
+      parentRoute: typeof appSettingsRouteRoute
     }
     '/(app)/settings/privacy': {
       id: '/(app)/settings/privacy'
-      path: '/settings/privacy'
+      path: '/privacy'
       fullPath: '/settings/privacy'
       preLoaderRoute: typeof appSettingsPrivacyRouteImport
-      parentRoute: typeof appRouteRoute
+      parentRoute: typeof appSettingsRouteRoute
     }
     '/(app)/settings/general': {
       id: '/(app)/settings/general'
-      path: '/settings/general'
+      path: '/general'
       fullPath: '/settings/general'
       preLoaderRoute: typeof appSettingsGeneralRouteImport
-      parentRoute: typeof appRouteRoute
+      parentRoute: typeof appSettingsRouteRoute
     }
     '/(app)/settings/account': {
       id: '/(app)/settings/account'
-      path: '/settings/account'
+      path: '/account'
       fullPath: '/settings/account'
       preLoaderRoute: typeof appSettingsAccountRouteImport
-      parentRoute: typeof appRouteRoute
+      parentRoute: typeof appSettingsRouteRoute
     }
     '/(app)/settings/about': {
       id: '/(app)/settings/about'
-      path: '/settings/about'
+      path: '/about'
       fullPath: '/settings/about'
       preLoaderRoute: typeof appSettingsAboutRouteImport
-      parentRoute: typeof appRouteRoute
+      parentRoute: typeof appSettingsRouteRoute
     }
   }
 }
 
-interface appRouteRouteChildren {
+interface appSettingsRouteRouteChildren {
   appSettingsAboutRoute: typeof appSettingsAboutRoute
   appSettingsAccountRoute: typeof appSettingsAccountRoute
   appSettingsGeneralRoute: typeof appSettingsGeneralRoute
@@ -279,13 +315,26 @@ interface appRouteRouteChildren {
   appSettingsIndexRoute: typeof appSettingsIndexRoute
 }
 
-const appRouteRouteChildren: appRouteRouteChildren = {
+const appSettingsRouteRouteChildren: appSettingsRouteRouteChildren = {
   appSettingsAboutRoute: appSettingsAboutRoute,
   appSettingsAccountRoute: appSettingsAccountRoute,
   appSettingsGeneralRoute: appSettingsGeneralRoute,
   appSettingsPrivacyRoute: appSettingsPrivacyRoute,
   appSettingsProfileRoute: appSettingsProfileRoute,
   appSettingsIndexRoute: appSettingsIndexRoute,
+}
+
+const appSettingsRouteRouteWithChildren =
+  appSettingsRouteRoute._addFileChildren(appSettingsRouteRouteChildren)
+
+interface appRouteRouteChildren {
+  appSettingsRouteRoute: typeof appSettingsRouteRouteWithChildren
+  appGameRoute: typeof appGameRoute
+}
+
+const appRouteRouteChildren: appRouteRouteChildren = {
+  appSettingsRouteRoute: appSettingsRouteRouteWithChildren,
+  appGameRoute: appGameRoute,
 }
 
 const appRouteRouteWithChildren = appRouteRoute._addFileChildren(

@@ -26,7 +26,7 @@ function SettingsShell({
   className?: string
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-5xl px-4 py-6 md:py-8", className)}>
+    <div className={cn("mx-auto w-full max-w-5xl px-4 py-4 md:py-6", className)}>
       <div className="grid grid-cols-1 gap-6 xlgap-8 xl:grid-cols-[220px_minmax(0,1fr)] xl:gap-8">
         <h1 className="sr-only">Pengaturan</h1>
         <aside className="hidden xl:block">

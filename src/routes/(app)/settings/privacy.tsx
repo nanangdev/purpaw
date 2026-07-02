@@ -9,7 +9,7 @@ export const Route = createFileRoute("/(app)/settings/privacy")({
 
 function RouteComponent() {
   return (
-    <SettingsShell showBack>
+    <SettingsShell>
       <PrivacySection />
     </SettingsShell>
   )

@@ -55,7 +55,7 @@ function ProfileSection() {
 
   return (
     <div className="space-y-6">
-      <h2 className="px-1 text-xl font-semibold tracking-tight md:sr-only">Profil</h2>
+      <h2 className="px-1 text-xl font-semibold tracking-tight sr-only">Profil</h2>
 
       <SettingsSection title="Profil">
         <SettingsCard>

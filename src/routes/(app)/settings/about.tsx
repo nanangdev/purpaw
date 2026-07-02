@@ -9,7 +9,7 @@ export const Route = createFileRoute("/(app)/settings/about")({
 
 function RouteComponent() {
   return (
-    <SettingsShell showBack>
+    <SettingsShell>
       <AboutSection />
     </SettingsShell>
   )

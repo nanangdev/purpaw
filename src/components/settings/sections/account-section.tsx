@@ -70,7 +70,7 @@ function AccountSection() {
 
   return (
     <div className="space-y-6">
-      <h2 className="px-1 text-xl font-semibold tracking-tight md:sr-only">Akun</h2>
+      <h2 className="px-1 text-xl font-semibold tracking-tight sr-only">Akun</h2>
 
       <SettingsSection title="Akun">
         <SettingsCard>
